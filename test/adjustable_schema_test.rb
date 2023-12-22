@@ -1,7 +1,10 @@
 require "test_helper"
+require 'minitest/autorun'
 
-class AdjustableSchemaTest < ActiveSupport::TestCase
-  test "it has a version number" do
-    assert AdjustableSchema::VERSION
-  end
+describe AdjustableSchema do
+	subject { AdjustableSchema }
+
+	it 'should be available' do
+		_(subject).must_be :available?
+	end
 end
