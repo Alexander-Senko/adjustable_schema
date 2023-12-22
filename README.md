@@ -1,8 +1,79 @@
-# AdjustableSchema
-Short description and motivation.
+# Adjustable Schema for Rails
+
+Define your model associations in the database without changing the schema or models.
+
+This Rails Engine was renamed and refactored from [Rails Dynamic Associations](https://github.com/Alexander-Senko/rails_dynamic_associations).
+
+## Features
+
+* Creates associations for your models when application starts.
+* Provides `Relationship` & `Relationship::Role` models.
+* No configuration code needed.
+* No code generated or inserted to your app (except migrations).
+* Adds some useful methods to `ActiveRecord` models to handle their relationships.
 
 ## Usage
-How to use my plugin.
+
+Add configuration records to the DB:
+
+``` ruby
+AdjustableSchema::Relationship.create! source_type: 'Person',
+                                       target_type: 'Book'
+```
+
+Or use a helper method:
+
+``` ruby
+AdjustableSchema::Relationship.seed! Person => Book
+```
+
+Now you have:
+
+``` ruby
+person.books
+book.people
+```
+
+### Roles
+
+You can create multiple role-based associations between two models.
+
+``` ruby
+AdjustableSchema::Relationship.seed! Person => Book, roles: %w[author editor]
+```
+
+You will get:
+
+``` ruby
+person.books
+person.authored_books
+person.edited_books
+
+book.people
+book.author_people
+book.editor_people
+```
+
+#### Special cases
+
+In case you have set up relations with a `User` model you'll get a slightly different naming:
+
+``` ruby
+AdjustableSchema::Relationship.seed! User => Book, %w[author editor]
+```
+
+``` ruby
+book.users
+book.authors
+book.editors
+```
+
+The list of models to be handled this way can be set with `actor_model_names` configuration parameter.
+It includes `User` by default.
+
+###### TODO
+
+* Describe self-referential associations.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -22,7 +93,12 @@ $ gem install adjustable_schema
 ```
 
 ## Contributing
-Contribution directions go here.
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
