@@ -16,6 +16,16 @@ module AdjustableSchema
 				joins(:relationships)
 						.merge Relationship.instance_eval(&)
 			end
+
+			class << self
+				def [] *names, **scopes
+					return super *names if names.any?
+
+					scopes
+							.map { of(_1).for _2 }
+							.reduce &:merge
+				end
+			end
 		end
 	end
 end
