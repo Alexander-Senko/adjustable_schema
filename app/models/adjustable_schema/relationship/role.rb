@@ -7,14 +7,25 @@ module AdjustableSchema
 
 			validates :name, presence: true, uniqueness: true
 
-			# FIXME: depends on default naming
-			scope :available, ->        { with_relationships { of :abstract } }
-			scope :of,        -> source { with_relationships { of source    } }
-			scope :for,       -> target { with_relationships { to target    } }
+			scope :available, ->        { with_relationships { send Config.shortcuts[:source], :abstract } }
+			scope :of,        -> source { with_relationships { send Config.shortcuts[:source], source    } }
+			scope :for,       -> target { with_relationships { send Config.shortcuts[:target], target    } }
 
 			def self.with_relationships(&)
 				joins(:relationships)
 						.merge Relationship.instance_eval(&)
+			end
+
+			class << self
+				def [] *names, **scopes
+					if scopes.any?
+						with_relationships { self[**scopes] }
+								.distinct
+					else
+						all
+					end
+							.scoping { names.any? ? super(*names) : all }
+				end
 			end
 		end
 	end
