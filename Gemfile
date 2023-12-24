@@ -10,5 +10,9 @@ gem "sqlite3"
 
 gem "sprockets-rails"
 
+group :test do
+	gem 'simplecov'
+end
+
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
