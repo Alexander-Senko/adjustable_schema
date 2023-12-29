@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails', '~> 7.1'
 
+  spec.add_dependency 'rails_model_load_hook', '~> 0.2'
   spec.add_dependency 'organizer-rails'
 end
