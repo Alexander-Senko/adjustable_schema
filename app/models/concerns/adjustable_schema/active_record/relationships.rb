@@ -13,11 +13,25 @@ module AdjustableSchema
 				end
 
 				def roles(&) = Role.of self, &
+
+				private
+
+				def define_recursive_methods association_name, method
+					define_method method do
+						send(association_name)
+								.recursive
+					end
+				end
 			end
 
 			concern :InstanceMethods do # to include when needed
 				included do
 					scope :roleless, -> { merge Relationship.nameless }
+
+					Config.association_directions.recursive
+							.select { reflect_on_association _1 }
+							.reject { method_defined? _2 }
+							.each   { define_recursive_methods _1, _2 }
 				end
 
 				def related?(...)

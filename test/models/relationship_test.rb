@@ -32,7 +32,7 @@ module AdjustableSchema
 		describe '.seed!' do
 			let(:last_seed) { described_class.last }
 
-		after { last_seed.destroy }
+			after { last_seed.destroy }
 
 			it 'accepts model names' do
 				described_class.seed! 'Model1', 'Model2'
