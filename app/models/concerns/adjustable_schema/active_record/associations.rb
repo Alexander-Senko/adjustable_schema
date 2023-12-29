@@ -17,6 +17,8 @@ module AdjustableSchema
 				def setup_association direction, target = self, role = nil
 					adjustable_association(direction, target      ).define
 					adjustable_association(direction, target, role).define if role
+
+					include Relationships::InstanceMethods
 				end
 
 				def adjustable_association(...)
