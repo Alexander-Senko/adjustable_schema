@@ -2,6 +2,8 @@
 
 # Setup model relationships
 AdjustableSchema::Relationship.module_eval do
+	seed! Model1
+
 	seed! Model1, Model2, roles: %i[
 			role1
 			role2

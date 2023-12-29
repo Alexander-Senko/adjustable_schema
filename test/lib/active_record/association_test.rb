@@ -28,6 +28,24 @@ module AdjustableSchema
 						.must_be_kind_of Array
 			end
 
+			it 'defines association scopes' do
+				_(record.send subject.name)
+						.wont_respond_to :recursive
+				_(target.all)
+						.wont_respond_to :recursive
+			end
+
+			describe 'when self-targeted' do
+				let(:target) { owner }
+
+				it 'defines recursive association scopes' do
+					_(record.send subject.name)
+							.must_respond_to :recursive
+					_(target.all)
+							.wont_respond_to :recursive
+				end
+			end
+
 			describe 'with a role' do
 				it "doesn't define role methods" do
 					_(record).wont_respond_to associated_with_role_method_name
@@ -52,7 +70,7 @@ module AdjustableSchema
 							.each { _(_1).must_equal role_name.to_s }
 				end
 
-				describe 'self-targeted' do
+				describe 'when self-targeted' do
 					let(:target) { owner }
 
 					let(:roleless_children_name) { owner.table_name }

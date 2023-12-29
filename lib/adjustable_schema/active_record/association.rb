@@ -2,15 +2,21 @@ module AdjustableSchema
 	module ActiveRecord
 		class Association < Struct.new(:owner, :direction, :target, :role)
 			require_relative 'association/naming'
+			require_relative 'association/scopes'
 
 			def define
 				name.tap do |association_name|
+					association = self # save context
+
 					has_many association_name, **(options = {
 							through:     define_relationships,
 							source:      direction,
 							source_type: target.base_class.name,
 							class_name:  target.name
-					})
+					}) do
+						include Scopes
+						include Scopes::Recursive if association.self_targeted?
+					end
 
 					unless role
 						has_many target_name.tableize.to_sym, -> { roleless }, **options if
