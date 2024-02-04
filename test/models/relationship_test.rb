@@ -5,39 +5,13 @@ describe AdjustableSchema::Relationship do
 	let(:described_class) { AdjustableSchema::Relationship }
 
 	describe 'scopes' do
-		before do
-			@association_names = AdjustableSchema::Engine.config.names[:associations] # backup
-
-			AdjustableSchema::Engine.config.names[:associations] = {
-					source: { shortcut: 'src' },
-					target: { shortcut: 'tgt' },
-			}
-
-			reload!
-		end
-
-		after do
-			AdjustableSchema::Engine.config.names[:associations] = @association_names # restore
-
-			reload!
-		end
-
-		def reload!
-			AdjustableSchema::Config.instance_eval do # HACK: invalidate caches
-				@association_directions = nil
-				@shortcuts              = nil
-			end
-
-			load AdjustableSchema::Engine.root / 'app/models/adjustable_schema/relationship.rb' # HACK: reload the model
-		end
-
 		it 'uses names from the config' do
-			_(described_class).must_respond_to :src
-			_(described_class).must_respond_to :tgt
+			_(described_class).must_respond_to :f
+			_(described_class).must_respond_to :t
 
 			_(described_class.abstract).must_equal described_class
-					.src(:abstract)
-					.tgt(:abstract)
+					.f(:abstract)
+					.t(:abstract)
 		end
 	end
 
