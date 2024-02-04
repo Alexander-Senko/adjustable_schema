@@ -4,28 +4,6 @@ require 'minitest/autorun'
 describe AdjustableSchema::Config do
 	let(:described_class) { AdjustableSchema::Config }
 
-	before do
-		AdjustableSchema::Engine.config.names = {
-				associations: {
-						source: {
-								shortcut:     'f',
-								self_related: 'from_self',
-								recursive:    'from_recursive',
-						},
-						target: {
-								shortcut:     't',
-								self_related: 'to_self',
-								recursive:    'to_recursive',
-						},
-				},
-		}
-
-		AdjustableSchema::Config.instance_eval do # HACK: invalidate caches
-			@association_directions = nil
-			@shortcuts              = nil
-		end
-	end
-
 	describe '.association_directions' do
 		subject { described_class.association_directions }
 
