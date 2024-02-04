@@ -51,29 +51,6 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 			describe 'when self-targeted' do
 				let(:target) { owner }
 
-				before do
-					@association_names = AdjustableSchema::Engine.config.names[:associations] # backup
-
-					AdjustableSchema::Engine.config.names[:associations] = {
-							source: { self_related: 'from_self' },
-							target: { self_related:   'to_self' },
-					}
-
-					reload!
-				end
-
-				after do
-					AdjustableSchema::Engine.config.names[:associations] = @association_names # restore
-
-					reload!
-				end
-
-				def reload!
-					AdjustableSchema::Config.instance_eval do # HACK: invalidate caches
-						@association_directions = nil
-					end
-				end
-
 				it 'names sources' do
 					_(source_association.name).must_equal :from_selves
 				end
