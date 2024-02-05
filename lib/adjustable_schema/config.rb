@@ -1,17 +1,22 @@
+require 'memery'
+
 module AdjustableSchema
 	module Config
+		include Memery
+
 		module Naming
-			def shortcuts
-				@shortcuts ||= # cache
-						config(:shortcut).tap do |shortcuts|
-							def shortcuts.opposite to: nil
-								if to
-									values.reject { _1 == to }.sole
-								else
-									transform_values { opposite to: _1 }
-								end
-							end
+			include Memery
+
+			memoize def shortcuts
+				config(:shortcut).tap do |shortcuts|
+					def shortcuts.opposite to: nil
+						if to
+							values.reject { _1 == to }.sole
+						else
+							transform_values { opposite to: _1 }
 						end
+					end
+				end
 			end
 
 			def self_related = config :self_related
@@ -39,13 +44,12 @@ module AdjustableSchema
 
 		module_function
 
-		def association_directions
-			@association_directions ||= # cache
-				association_names.keys.tap do |directions|
-					class << directions
-						include Naming
-					end
+		memoize def association_directions
+			association_names.keys.tap do |directions|
+				class << directions
+					include Naming
 				end
+			end
 		end
 
 		def find_direction(...)
