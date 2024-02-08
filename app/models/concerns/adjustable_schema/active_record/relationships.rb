@@ -16,6 +16,10 @@ module AdjustableSchema
 			end
 
 			concern :InstanceMethods do # to include when needed
+				included do
+					scope :roleless, -> { merge Relationship.nameless }
+				end
+
 				def related?(...)
 					relationships(...)
 							.any?
