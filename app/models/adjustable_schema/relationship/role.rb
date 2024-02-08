@@ -1,7 +1,7 @@
 module AdjustableSchema
 	class Relationship
 		class Role < ApplicationRecord
-			include Organizer::Identifiable.by :name
+			include Organizer::Identifiable.by :name, symbolized: true
 
 			has_many :relationships
 

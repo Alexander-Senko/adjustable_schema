@@ -2,7 +2,7 @@ require_relative "lib/adjustable_schema/version"
 require_relative 'lib/adjustable_schema/authors'
 
 Gem::Specification.new do |spec|
-  spec.platform = Gem::Platform::RUBY
+  spec.platform    = Gem::Platform::RUBY
   spec.name        = "adjustable_schema"
   spec.version     = AdjustableSchema::VERSION
   spec.authors     = AdjustableSchema::AUTHORS.filter_map &:name
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rails', '~> 7.1'
 
   spec.add_dependency 'rails_model_load_hook', '~> 0.2'
-  spec.add_dependency 'organizer-rails'
+  spec.add_dependency 'organizer-rails',       '~> 0.2'
 
   spec.add_dependency 'memery'
 end
