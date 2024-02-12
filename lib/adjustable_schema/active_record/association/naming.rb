@@ -24,7 +24,7 @@ module AdjustableSchema
 				end
 
 				memoize def target_name
-					target.name
+					target.model_name.unnamespaced
 							.split('::')
 							.reverse
 							.join
