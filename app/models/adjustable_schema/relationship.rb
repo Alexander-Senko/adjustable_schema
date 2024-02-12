@@ -72,6 +72,16 @@ module AdjustableSchema
 		end
 
 		class << self
+			def [] **scopes
+				scopes
+						.map do
+							self
+									.send(Config.shortcuts[:source], _1)
+									.send(Config.shortcuts[:target], _2)
+						end
+						.reduce &:or
+			end
+
 			def seed! *models, roles: [], **_models
 				return seed!({ **Hash[*models], **_models }, roles:) if _models.any? # support keyword arguments syntax
 
