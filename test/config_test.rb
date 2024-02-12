@@ -75,8 +75,8 @@ describe AdjustableSchema::Config do
 			_(described_class.find_direction f: :x).must_equal [ :source, :x ]
 		end
 
-		it 'returns `nil` if missing' do
-			_(described_class.find_direction from: :x).must_be_nil
+		it 'raises on invalid names' do
+			_ { described_class.find_direction from: :x }.must_raise ArgumentError
 		end
 	end
 end
