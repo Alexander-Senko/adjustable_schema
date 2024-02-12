@@ -21,7 +21,7 @@ module AdjustableSchema
 
 			def define_relationships
 				relationships_name.tap do |association_name|
-					has_many association_name, role && -> { where role: },
+					has_many association_name, (role = self.role) && -> { where role: },
 							as:         Config.association_directions.opposite(to: direction),
 							class_name: 'AdjustableSchema::Relationship'
 				end

@@ -20,7 +20,10 @@ describe AdjustableSchema::ActiveRecord::Association do
 		before { subject.define }
 
 		it 'defines an association' do
-			_(subject.owner.reflect_on_association subject.name).wont_be_nil
+			_(subject.owner.reflect_on_association subject.name)
+					.wont_be_nil
+			_(subject.owner.create.send(subject.name).to_a)
+					.must_be_kind_of Array
 		end
 
 		describe 'with a role' do
