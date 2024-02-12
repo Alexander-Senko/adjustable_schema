@@ -23,6 +23,7 @@ module AdjustableSchema
 				relationships_name.tap do |association_name|
 					has_many association_name, (role = self.role) && -> { where role: },
 							as:         Config.association_directions.opposite(to: direction),
+							dependent:  :destroy_async,
 							class_name: 'AdjustableSchema::Relationship'
 				end
 			end
