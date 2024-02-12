@@ -23,7 +23,7 @@ module AdjustableSchema
 
 			def recursive
 				config.values.to_h do
-					[ _1[:self_related].to_s.pluralize.to_sym, _1[:recursive] ]
+					[ _1[:self_related].to_s.pluralize.to_sym, _1[:recursive].to_sym ]
 				end
 			end
 
@@ -35,7 +35,7 @@ module AdjustableSchema
 
 			def config section = nil
 				if section
-					config.transform_values { _1[section] }
+					config.transform_values { _1[section].to_sym }
 				else
 					Config.association_names # TODO: DRY
 				end
