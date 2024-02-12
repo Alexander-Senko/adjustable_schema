@@ -71,6 +71,7 @@ module AdjustableSchema
 
 		def normalize **options
 			shortcuts
+					.tap { options.assert_valid_keys _1.keys, _1.values }
 					.select { _2.in? options }
 					.each { options[_1] = options.delete _2 }
 
