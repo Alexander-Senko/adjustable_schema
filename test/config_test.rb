@@ -14,8 +14,8 @@ describe AdjustableSchema::Config do
 		describe '.shortcuts' do
 			it 'returns names' do
 				_(subject.shortcuts).must_equal(
-						source: 'f',
-						target: 't',
+						source: :f,
+						target: :t,
 				)
 			end
 		end
@@ -23,25 +23,25 @@ describe AdjustableSchema::Config do
 		describe '.shortcuts.opposite' do
 			it 'returns names' do
 				_(subject.shortcuts.opposite).must_equal(
-						source: 't',
-						target: 'f',
+						source: :t,
+						target: :f,
 				)
 			end
 
 			it 'returns a shortcut when called with `to:`' do
-				_(subject.shortcuts.opposite to: 'f').must_equal 't'
+				_(subject.shortcuts.opposite to: :f).must_equal :t
 			end
 
 			it 'raises on invalid names' do
-				_ { subject.shortcuts.opposite to: 'of' }.must_raise Enumerable::SoleItemExpectedError
+				_ { subject.shortcuts.opposite to: :of }.must_raise Enumerable::SoleItemExpectedError
 			end
 		end
 
 		describe '.self_related' do
 			it 'returns names' do
 				_(subject.self_related).must_equal(
-						source: 'from_self',
-						target:   'to_self',
+						source: :from_self,
+						target:   :to_self,
 				)
 			end
 		end
@@ -49,8 +49,8 @@ describe AdjustableSchema::Config do
 		describe '.recursive' do
 			it 'returns names' do
 				_(subject.recursive).must_equal(
-						from_selves: 'from_recursive',
-						  to_selves:   'to_recursive',
+						from_selves: :from_recursive,
+						  to_selves:   :to_recursive,
 				)
 			end
 		end
@@ -72,7 +72,7 @@ describe AdjustableSchema::Config do
 		end
 
 		it 'finds by shortcut' do
-			_(described_class.find_direction 'f' => :x).must_equal [ :source, :x ]
+			_(described_class.find_direction f: :x).must_equal [ :source, :x ]
 		end
 
 		it 'returns `nil` if missing' do
