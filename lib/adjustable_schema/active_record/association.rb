@@ -5,13 +5,19 @@ module AdjustableSchema
 
 			def define
 				name.tap do |association_name|
-					has_many association_name,
+					has_many association_name, **(options = {
 							through:     define_relationships,
 							source:      direction,
 							source_type: target.base_class.name,
 							class_name:  target.name
+					})
 
-					define_role_methods unless role
+					unless role
+						has_many target_name.tableize.to_sym, -> { roleless }, **options if
+								self_targeted?
+
+						define_role_methods
+					end
 				end
 			end
 
