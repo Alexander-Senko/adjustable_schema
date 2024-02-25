@@ -18,6 +18,8 @@ module AdjustableSchema
 
 		describe '#define' do
 			let(:associated_with_role_method_name) { "#{subject.name}_with_roles" }
+			let(:name_for_any)                     { "#{subject.name.to_s.singularize}ed" }
+			let(:name_for_none)                    { "#{subject.name.to_s.singularize}less" }
 
 			before { subject.define }
 
@@ -26,6 +28,16 @@ module AdjustableSchema
 						.wont_be_nil
 				_(record.send(subject.name).to_a)
 						.must_be_kind_of Array
+			end
+
+			it 'defines scopes' do
+				_(owner).must_respond_to name_for_any
+				_(owner).must_respond_to name_for_none
+			end
+
+			it 'defines methods' do
+				_(record).must_respond_to "#{name_for_any}?"
+				_(record).must_respond_to "#{name_for_none}?"
 			end
 
 			it 'defines association scopes' do
