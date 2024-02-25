@@ -56,10 +56,12 @@ book.editor_people
 
 #### Special cases
 
-In case you have set up relations with a `User` model you'll get a slightly different naming:
+##### "Actor-like" models
+
+In case you have set up relationships with `User` model you'll get a slightly different naming:
 
 ``` ruby
-AdjustableSchema::Relationship.seed! User => Book, %w[author editor]
+AdjustableSchema::Relationship.seed! User => Book, roles: %w[author editor]
 ```
 
 ``` ruby
@@ -71,11 +73,42 @@ book.editors
 The list of models to be handled this way can be set with `actor_model_names` configuration parameter.
 It includes `User` by default.
 
-###### TODO
+##### Self-referencing models
 
-* Describe self-referential associations.
+You may want to set up self-targeted relationships:
+
+``` ruby
+AdjustableSchema::Relationship.seed! Person, roles: %w[friend]
+```
+
+In this case you'll get these associations:
+
+``` ruby
+person.parents
+person.children # for all the children
+person.people   # for "roleless" children, not friends
+person.friends
+person.friended_people
+```
+
+If you prefer a different naming over `parents` & `children`, you can configure it like this:
+
+```ruby
+AdjustableSchema::Engine.configure do
+  config.names[:associations][:source][:self] = :effect
+  config.names[:associations][:target][:self] = :cause
+end
+```
+
+Thus, for the self-referenced `Event`s, you'll get:
+
+``` ruby
+event.causes
+event.effects
+```
 
 ## Installation
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -83,13 +116,15 @@ gem "adjustable_schema"
 ```
 
 And then execute:
+
 ```bash
-$ bundle
+bundle
 ```
 
 Or install it yourself as:
+
 ```bash
-$ gem install adjustable_schema
+gem install adjustable_schema
 ```
 
 ## Contributing
@@ -101,4 +136,5 @@ $ gem install adjustable_schema
 5. Create new Pull Request
 
 ## License
+
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
