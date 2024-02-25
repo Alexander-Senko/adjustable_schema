@@ -59,6 +59,9 @@ module AdjustableSchema
 						target_name
 					end
 				end
+
+				def name_for_any  = :"#{name.to_s.singularize.passivize}"
+				def name_for_none = :"#{name.to_s.singularize}less"
 			end
 		end
 	end

@@ -18,6 +18,9 @@ module AdjustableSchema
 						include Scopes::Recursive if association.self_targeted?
 					end
 
+					define_scopes
+					define_methods
+
 					unless role
 						has_many target_name.tableize.to_sym, -> { roleless }, **options if
 								self_targeted?
@@ -38,6 +41,29 @@ module AdjustableSchema
 							dependent:  :destroy_async,
 							class_name: 'AdjustableSchema::Relationship'
 				end
+			end
+
+			def define_scopes
+				name = relationships_name
+
+				{
+						name_for_any  => -> { where.associated name },
+						name_for_none => -> { where.missing    name },
+				}
+						.reject { owner.singleton_class.method_defined? _1 }
+						.each   { owner.scope _1, _2 }
+			end
+
+			def define_methods
+				name = self.name
+
+				{
+						name_for_any  => -> { send(name).any?  },
+						name_for_none => -> { send(name).none? },
+				}
+						.transform_keys {"#{_1}?" }
+						.reject { owner.method_defined? _1 }
+						.each   { owner.define_method _1, &_2 }
 			end
 
 			def define_role_methods
