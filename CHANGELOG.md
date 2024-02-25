@@ -1,3 +1,28 @@
+## [0.7.0] — 2024-02-25
+
+### Changed
+
+- Naming: improved passive forms a bit.
+- Configuration: renamed `self_related` to `self`.
+
+### Added
+
+- Checks for related records’ presence:
+	- `.<associat>ed` —
+		records having associated ones,
+	- `.<association>less` —
+		records not having associated ones,
+	- `#<associat>ed?` —
+		if there are records associated,
+	- `#<association>less?` —
+		if there are no records associated.
+- Documentation: self-targeted relationships in README.
+
+### Fixed
+
+- Documentation: examples in the README.
+
+
 ## [0.6.0] — 2024-02-20
 
 ### Changed
