@@ -7,14 +7,14 @@ module AdjustableSchema
 		config.names = {
 				associations: {
 						source: {
-								shortcut:     :of,
-								self_related: :child,
-								recursive:    :descendants,
+								shortcut:  :of,
+								self:      :child,
+								recursive: :descendants,
 						},
 						target: {
-								shortcut:     :to,
-								self_related: :parent,
-								recursive:    :ancestors,
+								shortcut:  :to,
+								self:      :parent,
+								recursive: :ancestors,
 						},
 				},
 		}

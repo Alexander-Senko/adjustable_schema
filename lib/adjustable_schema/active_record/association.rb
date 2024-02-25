@@ -15,7 +15,7 @@ module AdjustableSchema
 							class_name:  target.name
 					}) do
 						include Scopes
-						include Scopes::Recursive if association.self_targeted?
+						include Scopes::Recursive if association.loop?
 					end
 
 					define_scopes
@@ -23,14 +23,14 @@ module AdjustableSchema
 
 					unless role
 						has_many target_name.tableize.to_sym, -> { roleless }, **options if
-								self_targeted?
+								loop?
 
 						define_role_methods
 					end
 				end
 			end
 
-			def self_targeted? = target == owner
+			def loop? = target == owner
 
 			private
 

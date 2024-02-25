@@ -38,7 +38,7 @@ module AdjustableSchema
 				private
 
 				memoize def name_with_role
-					if self_targeted?
+					if loop?
 						{
 								source: role.name,
 								target: "#{role.name.passivize}_#{target_name}",
@@ -52,9 +52,9 @@ module AdjustableSchema
 				end
 
 				memoize def name_without_role
-					if self_targeted?
+					if loop?
 						Config.association_directions
-								.self_related[direction]
+								.self[direction]
 					else
 						target_name
 					end

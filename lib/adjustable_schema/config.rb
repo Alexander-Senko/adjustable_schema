@@ -19,11 +19,11 @@ module AdjustableSchema
 				end
 			end
 
-			def self_related = config :self_related
+			def self = config :self
 
 			def recursive
 				config.values.to_h do
-					[ _1[:self_related].to_s.pluralize.to_sym, _1[:recursive].to_sym ]
+					[ _1[:self].to_s.pluralize.to_sym, _1[:recursive].to_sym ]
 				end
 			end
 
