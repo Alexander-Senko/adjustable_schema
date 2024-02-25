@@ -9,7 +9,9 @@ module AdjustableSchema
 				module Inflections
 					refine String do
 						def passivize
-							sub(/(e?d?|ing|[eo]r|ant|(t)ion)$/, '\\2ed')
+							self
+									.sub(/(author)$/, '\\2ed')
+									.sub(/(e*|ed|ing|[eo]r|ant|(t)ion)$/, '\\2ed')
 						end
 					end
 				end
