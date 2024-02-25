@@ -37,9 +37,9 @@ describe AdjustableSchema::Config do
 			end
 		end
 
-		describe '.self_related' do
+		describe '.self' do
 			it 'returns names' do
-				_(subject.self_related).must_equal(
+				_(subject.self).must_equal(
 						source: :from_self,
 						target:   :to_self,
 				)
