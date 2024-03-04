@@ -96,5 +96,16 @@ module AdjustableSchema
 				end
 			end
 		end
+
+		describe '#inverse' do
+			it 'is the opposite one' do
+				_(subject.inverse)
+						.must_be_kind_of described_class
+				_(subject.inverse)
+						.wont_equal subject
+				_(subject.inverse.inverse)
+						.must_equal subject
+			end
+		end
 	end
 end
