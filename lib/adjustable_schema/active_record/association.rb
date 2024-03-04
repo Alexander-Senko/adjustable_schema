@@ -1,8 +1,12 @@
+require 'memery'
+
 module AdjustableSchema
 	module ActiveRecord
 		class Association < Struct.new(:owner, :direction, :target, :role)
 			require_relative 'association/naming'
 			require_relative 'association/scopes'
+
+			include Memery
 
 			def define
 				name.tap do |association_name|
@@ -12,7 +16,8 @@ module AdjustableSchema
 							through:     define_relationships,
 							source:      direction,
 							source_type: target.base_class.name,
-							class_name:  target.name
+							class_name:  target.name,
+							inverse_of:  inverse.name,
 					}) do
 						include Scopes
 						include Scopes::Recursive if association.recursive?
@@ -39,6 +44,13 @@ module AdjustableSchema
 			def child?     = (recursive? and source?)
 			def parent?    = (recursive? and target?)
 			def hierarchy? = (child? and roleless?)
+
+			memoize def inverse
+				self.class.new target,
+						Config.association_directions.opposite(to: direction),
+						owner,
+						role
+			end
 
 			private
 
