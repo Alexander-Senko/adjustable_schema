@@ -18,5 +18,8 @@ module AdjustableSchema
 						},
 				},
 		}
+
+		config.active_record
+				.automatically_invert_plural_associations = true
 	end
 end
