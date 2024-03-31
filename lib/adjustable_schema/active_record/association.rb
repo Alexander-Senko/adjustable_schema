@@ -15,22 +15,24 @@ module AdjustableSchema
 							class_name:  target.name
 					}) do
 						include Scopes
-						include Scopes::Recursive if association.loop?
+						include Scopes::Recursive if association.recursive?
 					end
 
 					define_scopes
 					define_methods
 
 					unless role
-						has_many target_name.tableize.to_sym, -> { roleless }, **options if
-								loop?
+						# HACK: using `try` to overcome a Rails bug
+						# (see https://github.com/rails/rails/issues/40109)
+						has_many target_name.tableize.to_sym, -> { try :roleless }, **options if
+								recursive?
 
 						define_role_methods
 					end
 				end
 			end
 
-			def loop? = target == owner
+			def recursive? = target == owner
 
 			private
 
