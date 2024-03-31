@@ -1,3 +1,13 @@
+## [0.7.1] — 2024-03-31
+
+### Fixed
+
+- DB constraints:
+	- `roles.name` is `NOT NULL`,
+	- `UNIQUE` constraints should treat `NULLS` as `NOT DISTINCT`.
+- Roleless recursive associations used to fail on `joins`.
+
+
 ## [0.7.0] — 2024-02-25
 
 ### Changed
