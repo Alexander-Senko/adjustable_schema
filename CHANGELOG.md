@@ -1,3 +1,10 @@
+## [0.7.2] — 2024-04-02
+
+### Fixed
+
+- `roleless` scope used to generate wrong queries.
+
+
 ## [0.7.1] — 2024-03-31
 
 ### Fixed
