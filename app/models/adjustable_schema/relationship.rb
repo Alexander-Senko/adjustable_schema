@@ -5,8 +5,7 @@ module AdjustableSchema
 		belongs_to :role,                      optional: true
 
 		default_scope do
-			references(:role)
-					.includes :role
+			includes :role
 		end
 
 		Config.shortcuts.each &-> ((association, method)) do
