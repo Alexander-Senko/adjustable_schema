@@ -18,11 +18,19 @@ module AdjustableSchema
 
 				using Inflections
 
-				memoize def name
-					(role ? name_with_role : name_without_role)
+				memoize def name name = object_name
+					name
 							.to_s
 							.tableize
 							.to_sym
+				end
+
+				def object_name
+					if role
+						name_with_role
+					else
+						name_without_role
+					end
 				end
 
 				memoize def target_name
@@ -51,17 +59,20 @@ module AdjustableSchema
 					end
 				end
 
-				memoize def name_without_role
+				def name_without_role
 					if recursive?
 						Config.association_directions
 								.self[direction]
+								.to_s
 					else
 						target_name
 					end
 				end
 
-				def name_for_any  = :"#{name.to_s.singularize.passivize}"
-				def name_for_none = :"#{name.to_s.singularize}less"
+				def roleless_name = name(target_name)
+
+				def name_for_any (name = object_name) = :"#{name.passivize}"
+				def name_for_none(name = object_name) = :"#{name}less"
 			end
 		end
 	end
