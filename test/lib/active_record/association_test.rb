@@ -17,31 +17,52 @@ module AdjustableSchema
 		let(:record)    { subject.owner.create! }
 
 		describe '#define' do
-			let(:associated_with_role_method_name) { "#{subject.name}_with_roles" }
-			let(:name_for_any)                     { "#{subject.name.to_s.singularize}ed" }
-			let(:name_for_none)                    { "#{subject.name.to_s.singularize}less" }
+			let(:association_name)                 { subject.name }
+			let(:associated_with_role_method_name) { "#{association_name}_with_roles" }
+			let(:name_for_any)                     { "#{association_name.to_s.singularize}ed" }
+			let(:name_for_none)                    { "#{association_name.to_s.singularize}less" }
 
 			before { subject.define }
 
-			it 'defines an association' do
-				_(owner.reflect_on_association subject.name)
-						.wont_be_nil
-				_(record.send(subject.name).to_a)
-						.must_be_kind_of Array
+			module SharedExamples
+				refine Minitest::Spec.singleton_class do
+					def defines_association(&)
+						it 'defines an association' do
+							_(owner.reflect_on_association association_name)
+									.wont_be_nil
+							_(record.send(association_name).to_a)
+									.must_be_kind_of Array
+						end
+					end
+
+					def defines_scopes(&)
+						it 'defines scopes' do
+							instance_eval(&) if block_given?
+
+							_(owner).must_respond_to name_for_any
+							_(owner).must_respond_to name_for_none
+						end
+					end
+
+					def defines_methods(&)
+						it 'defines methods' do
+							instance_eval(&) if block_given?
+
+							_(record).must_respond_to "#{name_for_any}?"
+							_(record).must_respond_to "#{name_for_none}?"
+						end
+					end
+				end
 			end
 
-			it 'defines scopes' do
-				_(owner).must_respond_to name_for_any
-				_(owner).must_respond_to name_for_none
-			end
+			using SharedExamples
 
-			it 'defines methods' do
-				_(record).must_respond_to "#{name_for_any}?"
-				_(record).must_respond_to "#{name_for_none}?"
-			end
+			defines_association
+			defines_scopes
+			defines_methods
 
 			it 'defines association scopes' do
-				_(record.send subject.name)
+				_(record.send association_name)
 						.wont_respond_to :recursive
 				_(target.all)
 						.wont_respond_to :recursive
@@ -51,7 +72,7 @@ module AdjustableSchema
 				let(:target) { owner }
 
 				it 'defines recursive association scopes' do
-					_(record.send subject.name)
+					_(record.send association_name)
 							.must_respond_to :recursive
 					_(target.all)
 							.wont_respond_to :recursive
@@ -85,13 +106,22 @@ module AdjustableSchema
 				describe 'when self-targeted' do
 					let(:target) { owner }
 
-					let(:roleless_children_name) { owner.table_name }
+					describe 'for roleless children' do
+						let(:association_name) { owner.table_name }
 
-					it 'defines an extra association for roleless children' do
-						_(owner.reflect_on_association roleless_children_name)
-								.wont_be_nil
-						_(record.send(roleless_children_name).to_a)
-								.must_be_kind_of Array
+						defines_association
+
+						defines_scopes do
+							skip 'not yet implemented'
+
+							_(owner).must_respond_to :intermediate
+							_(owner).must_respond_to :branching
+						end
+
+						defines_methods do
+							_(record).must_respond_to :intermediate?
+							_(record).must_respond_to :branching?
+						end
 					end
 				end
 			end

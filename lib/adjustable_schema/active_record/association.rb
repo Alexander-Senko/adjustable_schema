@@ -24,8 +24,8 @@ module AdjustableSchema
 					unless role
 						# HACK: using `try` to overcome a Rails bug
 						# (see https://github.com/rails/rails/issues/40109)
-						has_many target_name.tableize.to_sym, -> { try :roleless }, **options if
-								recursive?
+						has_many roleless_name, -> { try :roleless }, **options if
+								child?
 
 						define_role_methods
 					end
@@ -33,6 +33,12 @@ module AdjustableSchema
 			end
 
 			def recursive? = target == owner
+			def roleless?  = !role
+			def source?    = direction == :source
+			def target?    = direction == :target
+			def child?     = (recursive? and source?)
+			def parent?    = (recursive? and target?)
+			def hierarchy? = (child? and roleless?)
 
 			private
 
@@ -57,11 +63,19 @@ module AdjustableSchema
 			end
 
 			def define_methods
-				name = self.name
+				name          = self.name
+				roleless_name = self.roleless_name
 
 				{
 						name_for_any  => -> { send(name).any?  },
 						name_for_none => -> { send(name).none? },
+
+						**(hierarchy? ? {
+								name_for_any( target_name) => -> { send(roleless_name).any?  },
+								name_for_none(target_name) => -> { send(roleless_name).none? },
+								intermediate:                 -> { send(roleless_name).one?  },
+								branching:                    -> { send(roleless_name).many? },
+						} : {}),
 				}
 						.transform_keys {"#{_1}?" }
 						.reject { owner.method_defined? _1 }
