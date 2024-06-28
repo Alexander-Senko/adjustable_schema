@@ -37,19 +37,19 @@ module AdjustableSchema
 
 					def defines_scopes(&)
 						it 'defines scopes' do
-							instance_eval(&) if block_given?
-
 							_(owner).must_respond_to name_for_any
 							_(owner).must_respond_to name_for_none
+
+							instance_eval(&) if block_given?
 						end
 					end
 
 					def defines_methods(&)
 						it 'defines methods' do
-							instance_eval(&) if block_given?
-
 							_(record).must_respond_to "#{name_for_any}?"
 							_(record).must_respond_to "#{name_for_none}?"
+
+							instance_eval(&) if block_given?
 						end
 					end
 				end

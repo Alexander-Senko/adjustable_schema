@@ -52,11 +52,17 @@ module AdjustableSchema
 			end
 
 			def define_scopes
-				name = relationships_name
+				name          = relationships_name
+				roleless_name = self.roleless_name
 
 				{
 						name_for_any  => -> { where.associated name },
 						name_for_none => -> { where.missing    name },
+
+						**({
+								name_for_any( target_name) => -> { where.associated roleless_name },
+								name_for_none(target_name) => -> { where.missing    roleless_name },
+						} if hierarchy?),
 				}
 						.reject { owner.singleton_class.method_defined? _1 }
 						.each   { owner.scope _1, _2 }
