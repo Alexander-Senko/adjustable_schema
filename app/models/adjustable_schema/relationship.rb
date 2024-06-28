@@ -15,7 +15,7 @@ module AdjustableSchema
 					where association => object
 				when Class
 					where "#{association}_type" => object.ancestors
-							.select { _1 <= object.base_class }
+							.grep(..object.base_class)
 							.map(&:name)
 				when ::ActiveRecord::Relation
 					send(method, object.klass)

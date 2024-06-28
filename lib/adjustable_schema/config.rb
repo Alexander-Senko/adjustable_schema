@@ -11,7 +11,7 @@ module AdjustableSchema
 				config(:shortcut).tap do |shortcuts|
 					def shortcuts.opposite to: nil
 						if to
-							values.reject { _1 == to }.sole
+							values.grep_v(to).sole
 						else
 							transform_values { opposite to: _1 }
 						end
@@ -28,7 +28,7 @@ module AdjustableSchema
 			end
 
 			def opposite to:
-				reject { _1 == to }.sole
+				grep_v(to).sole
 			end
 
 			private
