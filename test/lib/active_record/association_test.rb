@@ -68,7 +68,7 @@ module AdjustableSchema
 						.wont_respond_to :recursive
 			end
 
-			describe 'when self-targeted' do
+			describe 'when recursive' do
 				let(:target) { owner }
 
 				it 'defines recursive association scopes' do
@@ -103,7 +103,7 @@ module AdjustableSchema
 							.each { _(_1).must_equal role_name.to_s }
 				end
 
-				describe 'when self-targeted' do
+				describe 'when recursive' do
 					let(:target) { owner }
 
 					describe 'for roleless children' do

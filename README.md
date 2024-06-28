@@ -75,7 +75,7 @@ It includes `User` by default.
 
 ##### Self-referencing models
 
-You may want to set up self-targeted relationships:
+You may want to set up recursive relationships:
 
 ``` ruby
 AdjustableSchema::Relationship.seed! Person, roles: %w[friend]
@@ -100,7 +100,7 @@ AdjustableSchema::Engine.configure do
 end
 ```
 
-Thus, for the self-referenced `Event`s, you'll get:
+Thus, for hierarchical `Event`s, you'll get:
 
 ``` ruby
 event.causes
