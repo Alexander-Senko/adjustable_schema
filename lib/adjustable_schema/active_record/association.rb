@@ -56,7 +56,7 @@ module AdjustableSchema
 
 			def define_methods
 				flags
-						.transform_keys { "#{_1}?" }
+						.transform_keys { :"#{it}?" }
 						.reject { owner.method_defined? _1 }
 						.each   { owner.define_method _1, &_2 }
 			end

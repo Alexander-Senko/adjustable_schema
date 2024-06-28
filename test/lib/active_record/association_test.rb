@@ -100,7 +100,7 @@ module AdjustableSchema
 
 					associated_with_role
 							.distinct.pluck('adjustable_schema_relationship_roles.name')
-							.each { _(_1).must_equal role_name.to_s }
+							.each { _(it).must_equal role_name.to_s }
 				end
 
 				describe 'when recursive' do

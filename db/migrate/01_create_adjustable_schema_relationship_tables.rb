@@ -22,7 +22,7 @@ class CreateAdjustableSchemaRelationshipTables < ActiveRecord::Migration[7.1]
 					target_id target_type
 					role_id
 			].tap { |columns|
-				columns.reject! { _1.ends_with? '_type' } if foreign_key_type == :uuid # OPTIMIZATION: IDs are unique
+				columns.reject! { it.ends_with? '_type' } if foreign_key_type == :uuid # OPTIMIZATION: IDs are unique
 
 				# NULLS are DISTINCT by default.
 				# One can use `ADD CONSTRAINT … UNIQUE NULLS NOT DISTINCT (…)` instead

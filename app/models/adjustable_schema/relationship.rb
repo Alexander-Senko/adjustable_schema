@@ -62,7 +62,7 @@ module AdjustableSchema
 
 		scope :abstract, -> {
 			Config.shortcuts.values
-					.map { send _1, :abstract }
+					.map { send it, :abstract }
 					.reduce &:merge
 		}
 
@@ -114,7 +114,7 @@ module AdjustableSchema
 				]
 					roles
 							.map { |name| Role.find_or_create_by! name: }
-							.then { _1.presence or [ nil ] } # no roles => nameless relationship
+							.then { it.presence or [ nil ] } # no roles => nameless relationship
 							.map { |role| create! source_type:, target_type:, role: }
 				in [ Hash => models ]
 					for sources, targets in models do
@@ -145,7 +145,7 @@ module AdjustableSchema
 		# https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Polymorphic+Associations
 		reflections
 				.values
-				.select { _1.options[:polymorphic] }
+				.select { it.options[:polymorphic] }
 				.each do |reflection|
 					define_method "#{reflection.name}_type=" do |type|
 						super type && type.to_s.classify.constantize.base_class.to_s

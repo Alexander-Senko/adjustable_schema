@@ -13,7 +13,7 @@ module AdjustableSchema
 						if to
 							values.grep_v(to).sole
 						else
-							transform_values { opposite to: _1 }
+							transform_values { opposite to: it }
 						end
 					end
 				end
@@ -23,7 +23,7 @@ module AdjustableSchema
 
 			def recursive
 				config.values.to_h do
-					[ _1[:self].to_s.pluralize.to_sym, _1[:recursive].to_sym ]
+					[ it[:self].to_s.pluralize.to_sym, it[:recursive].to_sym ]
 				end
 			end
 
@@ -35,7 +35,7 @@ module AdjustableSchema
 
 			def config section = nil
 				if section
-					config.transform_values { _1[section].to_sym }
+					config.transform_values { it[section].to_sym }
 				else
 					Config.association_names # TODO: DRY
 				end
@@ -71,7 +71,7 @@ module AdjustableSchema
 
 		def normalize **options
 			shortcuts
-					.tap { options.assert_valid_keys _1.keys, _1.values }
+					.tap { options.assert_valid_keys it.keys, it.values }
 					.select { _2.in? options }
 					.each { options[_1] = options.delete _2 }
 

@@ -8,7 +8,7 @@ module AdjustableSchema
 
 				memoize def relationships
 					Config.association_directions.to_h do
-						[ _1, Relationship.abstract.send(Config.shortcuts.opposite[_1], self) ]
+						[ it, Relationship.abstract.send(Config.shortcuts.opposite[it], self) ]
 					end
 				end
 
@@ -44,7 +44,7 @@ module AdjustableSchema
 							.preload(Config.association_directions)
 							.map do |relationship|
 								Config.association_directions
-										.map { relationship.send _1 } # both objects
+										.map { relationship.send it } # both objects
 										.without(self) # the related one
 										.first or self # may be recursive
 							end
@@ -57,7 +57,7 @@ module AdjustableSchema
 								.send Config.shortcuts[direction], scope
 					else # all in both directions
 						Config.association_directions
-								.map { relationships_to _1 }
+								.map { relationships_to it }
 								.reduce(&:or)
 					end
 				end

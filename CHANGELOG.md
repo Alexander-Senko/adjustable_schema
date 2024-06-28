@@ -2,7 +2,7 @@
 
 ### Changed
 
-- Requires Rails 8.
+- Requires Rails 8 and Ruby 3.4+.
 - Protected `AdjustableSchema::Relationship::Role` from being deleted when used.
 
 
