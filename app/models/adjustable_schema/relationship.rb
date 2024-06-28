@@ -100,7 +100,7 @@ module AdjustableSchema
 						end
 					end
 				in [ Class => source ]
-					seed! source, source, roles: # self-related
+					seed! source, source, roles: # recursive
 				end
 			end
 		end

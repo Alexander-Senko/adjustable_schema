@@ -24,7 +24,7 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 				_(target_association.name).must_equal :dummy_roled_model2s
 			end
 
-			describe 'when self-targeted' do
+			describe 'when recursive' do
 				let(:target) { owner }
 
 				it 'names sources' do
@@ -48,7 +48,7 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 				_(target_association.name).must_equal :model2s
 			end
 
-			describe 'when self-targeted' do
+			describe 'when recursive' do
 				let(:target) { owner }
 
 				it 'names sources' do
@@ -72,7 +72,7 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 				_(target_association.relationships_name).must_equal :dummy_roled_model2_relationships
 			end
 
-			describe 'when self-targeted' do
+			describe 'when recursive' do
 				let(:target) { owner }
 
 				it 'names sources' do

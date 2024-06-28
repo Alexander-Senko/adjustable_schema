@@ -124,7 +124,7 @@ module AdjustableSchema
 					end
 				end
 
-				describe 'when not self-targeted' do
+				describe 'when not recursive' do
 					it("isn't defined") { _(Model2.new).wont_respond_to method_name }
 				end
 			end
@@ -182,7 +182,7 @@ module AdjustableSchema
 					end
 				end
 
-				describe 'when not self-targeted' do
+				describe 'when not recursive' do
 					it("isn't defined") { _(Model2.new).wont_respond_to method_name }
 				end
 			end

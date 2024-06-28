@@ -46,7 +46,7 @@ module AdjustableSchema
 								Config.association_directions
 										.map { relationship.send _1 } # both objects
 										.without(self) # the related one
-										.first or self # may be self-related
+										.first or self # may be recursive
 							end
 							.uniq
 				end
