@@ -19,7 +19,7 @@ module AdjustableSchema
 		describe '#define' do
 			let(:association_name)                 { subject.name }
 			let(:associated_with_role_method_name) { "#{association_name}_with_roles" }
-			let(:name_for_any)                     { "#{association_name.to_s.singularize}ed" }
+			let(:name_for_any)                     { "#{association_name.to_s.singularize}ful" }
 			let(:name_for_none)                    { "#{association_name.to_s.singularize}less" }
 
 			before { subject.define }
