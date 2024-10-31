@@ -28,7 +28,7 @@ class CreateAdjustableSchemaRelationshipTables < ActiveRecord::Migration[7.1]
 				# One can use `ADD CONSTRAINT … UNIQUE NULLS NOT DISTINCT (…)` instead
 				t.index columns,
 						unique: true, where: 'role_id IS NOT NULL', name: :index_adjustable_schema_relationships_uniqueness_with_role
-				t.index columns.excluding(:role_id),
+				t.index columns.without(:role_id),
 						unique: true, where: 'role_id IS     NULL', name: :index_adjustable_schema_relationships_uniqueness_without_role
 			}
 		end
