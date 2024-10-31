@@ -10,8 +10,11 @@ module AdjustableSchema
 					refine String do
 						def passivize
 							self
-									.sub(/(author)$/, '\\2ed')
-									.sub(/(e*|ed|ing|[eo]r|ant|(t)ion)$/, '\\2ed')
+									.presence
+									&.sub(/((:?[aeiou]+[^aeiou]+){2,})(?:or|ant|ion|e?ment)$/, '\1ed')
+									&.sub(/((:?[aeiou]+[^aeiou]+){1,})(?:ing)$/,               '\1ed')
+									&.sub(/(?:e*|ed|er)$/,                                     '\1ed')
+									.to_s
 						end
 					end
 				end

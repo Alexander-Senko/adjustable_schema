@@ -97,4 +97,31 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 			end
 		end
 	end
+
+	describe 'String#passivise' do
+		using AdjustableSchema::ActiveRecord::Association::Inflections
+
+		def passivize(string) = string.passivize
+
+		it { _(passivize 'parent'     ).must_equal 'parented'   }
+		it { _(passivize 'name'       ).must_equal 'named'      }
+		it { _(passivize 'user'       ).must_equal 'used'       }
+		it { _(passivize 'mentor'     ).must_equal 'mentored'   }
+		it { _(passivize 'director'   ).must_equal 'directed'   }
+		it { _(passivize 'author'     ).must_equal 'authored'   }
+		it { _(passivize 'editor'     ).must_equal 'edited'     }
+		it { _(passivize 'edition'    ).must_equal 'edited'     }
+		it { _(passivize 'translator' ).must_equal 'translated' }
+		it { _(passivize 'translation').must_equal 'translated' }
+		it { _(passivize 'version'    ).must_equal 'versioned'  }
+		it { _(passivize 'tenant'     ).must_equal 'tenanted'   }
+		it { _(passivize 'relaxant'   ).must_equal 'relaxed'    }
+		it { _(passivize 'segment'    ).must_equal 'segmented'  }
+		it { _(passivize 'enchantment').must_equal 'enchanted'  }
+		it { _(passivize 'improvement').must_equal 'improved'   }
+		it { _(passivize 'ping'       ).must_equal 'pinged'     }
+		it { _(passivize 'rating'     ).must_equal 'rated'      }
+		it { _(passivize 'processing' ).must_equal 'processed'  }
+		it { _(passivize ''           ).must_equal ''           }
+	end
 end
