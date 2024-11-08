@@ -3,15 +3,23 @@
 Gem::Author ||= Struct.new(
 		:name,
 		:email,
-		:github_url,
-)
+		:github,
+) do
+	def github_url = github && "https://github.com/#{github}"
+end
 
-module AdjustableSchema
-	AUTHORS = [
+module AdjustableSchema # :nodoc:
+	AUTHORS = [ # rubocop:disable Style/MutableConstant
 			Gem::Author.new(
-					name:       'Alexander Senko',
-					email:      'Alexander.Senko@gmail.com',
-					github_url: 'https://github.com/Alexander-Senko',
+					name:   'Alexander Senko',
+					email:  'Alexander.Senko@gmail.com',
+					github: 'Alexander-Senko',
 			),
-	].freeze
+	]
+
+	class << AUTHORS
+		def names      = filter_map &:name
+		def emails     = filter_map &:email
+		def github_url = filter_map(&:github_url).first
+	end
 end

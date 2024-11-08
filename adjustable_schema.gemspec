@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
 	spec.platform    = Gem::Platform::RUBY
 	spec.name        = 'adjustable_schema'
 	spec.version     = AdjustableSchema::VERSION
-	spec.authors     = AdjustableSchema::AUTHORS.filter_map &:name
-	spec.email       = AdjustableSchema::AUTHORS.filter_map &:email
-	spec.homepage    = "#{AdjustableSchema::AUTHORS.filter_map(&:github_url).first}/#{spec.name}"
+	spec.authors     = AdjustableSchema::AUTHORS.names
+	spec.email       = AdjustableSchema::AUTHORS.emails
+	spec.homepage    = "#{AdjustableSchema::AUTHORS.github_url}/#{spec.name}"
 	spec.summary     = 'Adjustable data schemas for Rails'
 	spec.description = 'Rails Engine to allow ActiveRecord associations be set up in the DB instead of being hard-coded.'
 	spec.license     = 'MIT'
