@@ -1,3 +1,34 @@
+## [0.8.0] — 2024-11-08
+
+### Changed
+
+- Renamed checks for related records:
+	`<associat>ful` form is now used instead of a passive one (`<associat>ed`) to check for related records’ presence.
+	- `.<associat>ful` — scope records having associated ones.
+	- `#<associat>ful?` — are there any records associated?
+- Naming: improved passive forms for words ending with `or`/`ant`/`ion`/`ment`/`ing`.
+
+### Added
+
+- Checks for related records’ presence on roleless recursive associations:
+	- `.<associat>ful` —
+		records having associated ones;
+	- `.<association>less` —
+		records not having associated ones;
+	- `#<associat>ful?` —
+		if there are records associated;
+	- `#<association>less?` —
+		if there are no records associated;
+	- `#intermediate?` —
+		whether is only one child record associated (_Is the node just a link between two other nodes like?_);
+	- `#branching?` —
+		whether are several child records associated.
+
+### Fixed
+
+- Naming: passive form for `author`.
+
+
 ## [0.7.2] — 2024-04-02
 
 ### Fixed
@@ -26,11 +57,11 @@
 
 - Checks for related records’ presence:
 	- `.<associat>ed` —
-		records having associated ones,
+		records having associated ones;
 	- `.<association>less` —
-		records not having associated ones,
+		records not having associated ones;
 	- `#<associat>ed?` —
-		if there are records associated,
+		if there are records associated;
 	- `#<association>less?` —
 		if there are no records associated.
 - Documentation: self-targeted relationships in README.
