@@ -21,6 +21,27 @@ module AdjustableSchema
 
 				using Inflections
 
+				module Recursive
+					include Memery
+
+					memoize def name_with_role = {
+							source: role.name,
+							target: "#{role.name.passivize}_#{target_name}",
+					}[direction]
+
+					def name_without_role
+						Config.association_directions
+								.self[direction]
+								.to_s
+					end
+				end
+
+				def initialize(...)
+					super
+
+					extend Recursive if recursive?
+				end
+
 				memoize def name name = object_name
 					name
 							.to_s
@@ -48,29 +69,12 @@ module AdjustableSchema
 
 				private
 
-				memoize def name_with_role
-					if recursive?
-						{
-								source: role.name,
-								target: "#{role.name.passivize}_#{target_name}",
-						}[direction]
-					else
-						"#{{
-								source: role.name,
-								target: role.name.passivize,
-						}[direction]}_#{target_name}"
-					end
-				end
+				memoize def name_with_role = "#{{
+						source: role.name,
+						target: role.name.passivize,
+				}[direction]}_#{target_name}"
 
-				def name_without_role
-					if recursive?
-						Config.association_directions
-								.self[direction]
-								.to_s
-					else
-						target_name
-					end
-				end
+				def name_without_role = target_name
 
 				def roleless_name = name(target_name)
 

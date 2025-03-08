@@ -1,35 +1,32 @@
+require 'memery'
+
 module AdjustableSchema
 	module ActiveRecord
 		class Association < Struct.new(:owner, :direction, :target, :role)
 			require_relative 'association/naming'
 			require_relative 'association/scopes'
+			require_relative 'association/roleless'
+			require_relative 'association/hierarchy'
+
+			include Memery
+
+			def initialize(...)
+				super
+
+				extend Roleless  if roleless?
+				extend Hierarchy if hierarchy?
+			end
 
 			def define
-				name.tap do |association_name|
-					association = self # save context
+				association = self # save the context
 
-					has_many association_name, **(options = {
-							through:     define_relationships,
-							source:      direction,
-							source_type: target.base_class.name,
-							class_name:  target.name
-					}) do
-						include Scopes
-						include Scopes::Recursive if association.recursive?
-					end
-
-					define_scopes
-					define_methods
-
-					unless role
-						# HACK: using `try` to overcome a Rails bug
-						# (see https://github.com/rails/rails/issues/40109)
-						has_many roleless_name, -> { try :roleless }, **options if
-								child?
-
-						define_role_methods
-					end
+				has_many name, **options do
+					include Scopes
+					include Scopes::Recursive if association.recursive?
 				end
+
+				define_scopes
+				define_methods
 			end
 
 			def recursive? = target == owner
@@ -52,49 +49,16 @@ module AdjustableSchema
 			end
 
 			def define_scopes
-				name          = relationships_name
-				roleless_name = self.roleless_name
-
-				{
-						name_for_any  => -> { where.associated name },
-						name_for_none => -> { where.missing    name },
-
-						**({
-								name_for_any( target_name) => -> { where.associated roleless_name },
-								name_for_none(target_name) => -> { where.missing    roleless_name },
-						} if hierarchy?),
-				}
+				scopes
 						.reject { owner.singleton_class.method_defined? _1 }
 						.each   { owner.scope _1, _2 }
 			end
 
 			def define_methods
-				name          = self.name
-				roleless_name = self.roleless_name
-
-				{
-						name_for_any  => -> { send(name).any?  },
-						name_for_none => -> { send(name).none? },
-
-						**(hierarchy? ? {
-								name_for_any( target_name) => -> { send(roleless_name).any?  },
-								name_for_none(target_name) => -> { send(roleless_name).none? },
-								intermediate:                 -> { send(roleless_name).one?  },
-								branching:                    -> { send(roleless_name).many? },
-						} : {}),
-				}
-						.transform_keys {"#{_1}?" }
+				flags
+						.transform_keys { "#{_1}?" }
 						.reject { owner.method_defined? _1 }
 						.each   { owner.define_method _1, &_2 }
-			end
-
-			def define_role_methods
-				name = self.name
-
-				owner.redefine_method "#{name}_with_roles" do |*roles|
-					send(name)
-							.merge Relationship.named *roles
-				end
 			end
 
 			def has_many(association_name, ...)
@@ -102,6 +66,31 @@ module AdjustableSchema
 
 				owner.has_many(association_name, ...)
 			end
+
+			def scopes
+				name = relationships_name # save the context
+
+				{
+						name_for_any  => -> { where.associated name },
+						name_for_none => -> { where.missing    name },
+				}
+			end
+
+			def flags
+				name = self.name # save the context
+
+				{
+						name_for_any  => -> { send(name).any?  },
+						name_for_none => -> { send(name).none? },
+				}
+			end
+
+			memoize def options = {
+					through:     define_relationships,
+					source:      direction,
+					source_type: target.base_class.name,
+					class_name:  target.name,
+			}
 		end
 	end
 end
