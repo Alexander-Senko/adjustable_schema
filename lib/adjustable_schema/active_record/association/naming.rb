@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require 'memery'
 
 module AdjustableSchema
 	module ActiveRecord
-		class Association
+		class Association # :nodoc:
 			concerning :Naming do
 				include Memery
 
-				module Inflections
+				module Inflections # :nodoc:
 					refine String do
 						def passivize
-							self
-									.presence
+							presence
 									&.sub(/((:?[aeiou]+[^aeiou]+){2,})(?:or|ant|ion|e?ment)$/, '\1ed')
 									&.sub(/((:?[aeiou]+[^aeiou]+){1,})(?:ing)$/,               '\1ed')
 									&.sub(/(?:e*|ed|er)$/,                                     '\1ed')
@@ -21,7 +22,7 @@ module AdjustableSchema
 
 				using Inflections
 
-				module Recursive
+				module Recursive # :nodoc:
 					include Memery
 
 					memoize def name_with_role = {

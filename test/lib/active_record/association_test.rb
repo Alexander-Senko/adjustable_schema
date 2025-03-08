@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 require 'minitest/autorun'
 
 require 'adjustable_schema/active_record/association'
@@ -24,7 +26,7 @@ module AdjustableSchema
 
 			before { subject.define }
 
-			module SharedExamples
+			using Module.new { # shared examples
 				refine Minitest::Spec.singleton_class do
 					def defines_association(&)
 						it 'defines an association' do
@@ -53,9 +55,7 @@ module AdjustableSchema
 						end
 					end
 				end
-			end
-
-			using SharedExamples
+			}
 
 			defines_association
 			defines_scopes

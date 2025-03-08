@@ -1,8 +1,16 @@
+# frozen_string_literal: true
+
 require 'memery'
 
 module AdjustableSchema
 	module ActiveRecord
-		class Association < Struct.new(:owner, :direction, :target, :role)
+		# rubocop:disable Style/StructInheritance
+		class Association < Struct.new( # :nodoc:
+				:owner,
+				:direction,
+				:target,
+				:role,
+		)
 			require_relative 'association/naming'
 			require_relative 'association/scopes'
 			require_relative 'association/roleless'

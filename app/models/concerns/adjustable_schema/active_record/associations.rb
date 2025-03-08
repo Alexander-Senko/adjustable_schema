@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module AdjustableSchema
-	module ActiveRecord
+	module ActiveRecord # :nodoc:
 		concern :Associations do
 			class_methods do
 				private

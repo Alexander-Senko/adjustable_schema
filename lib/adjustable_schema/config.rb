@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'memery'
 
 module AdjustableSchema
-	module Config
+	module Config # :nodoc:
 		include Memery
 
-		module Naming
+		module Naming # :nodoc:
 			include Memery
 
 			memoize def shortcuts
@@ -63,9 +65,6 @@ module AdjustableSchema
 			delegate        method, to: :association_directions
 			module_function method
 		end
-
-		private
-		module_function
 
 		def association_names = Engine.config.names[:associations]
 

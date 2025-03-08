@@ -1,4 +1,9 @@
-require "test_helper"
+# frozen_string_literal: true
+
+# rubocop:disable Layout/MultilineBlockLayout
+# rubocop:disable Layout/BlockEndNewline
+
+require 'test_helper'
 require 'minitest/autorun'
 
 module AdjustableSchema

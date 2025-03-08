@@ -1,0 +1,12 @@
+inherit_from:
+  - https://github.com/Alexander-Senko/Alexander-Senko/raw/refs/heads/main/.rubocop.yml
+  - https://github.com/Alexander-Senko/Alexander-Senko/raw/refs/heads/main/.rubocop-rails.yml
+
+AllCops:
+  Exclude:
+    - '**/bin/*'
+    - test/dummy/{config,db}/**/*.rb
+
+Metrics/BlockLength:
+  AllowedMethods:
+    - describe

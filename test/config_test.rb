@@ -1,4 +1,12 @@
-require "test_helper"
+# frozen_string_literal: true
+
+# Enhanced table view for hashes
+#
+# rubocop:disable Layout/HashAlignment
+# rubocop:disable Layout/ArgumentAlignment
+# rubocop:disable Layout/IndentationStyle
+
+require 'test_helper'
 require 'minitest/autorun'
 
 describe AdjustableSchema::Config do
@@ -68,11 +76,11 @@ describe AdjustableSchema::Config do
 
 	describe '.find_direction' do
 		it 'finds existing' do
-			_(described_class.find_direction source: :x).must_equal [ :source, :x ]
+			_(described_class.find_direction source: :x).must_equal %i[ source x ]
 		end
 
 		it 'finds by shortcut' do
-			_(described_class.find_direction f: :x).must_equal [ :source, :x ]
+			_(described_class.find_direction f: :x).must_equal %i[ source x ]
 		end
 
 		it 'raises on invalid names' do

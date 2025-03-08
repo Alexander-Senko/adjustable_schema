@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'memery'
 
 module AdjustableSchema
-	module ActiveRecord
+	module ActiveRecord # :nodoc:
 		concern :Relationships do
 			class_methods do
 				include Memery
 
 				memoize def relationships
-					Config.association_directions.to_h do
-						[ it, Relationship.abstract.send(Config.shortcuts.opposite[it], self) ]
+					Config.association_directions.index_with do
+						Relationship.abstract.send Config.shortcuts.opposite[it], self
 					end
 				end
 
@@ -51,8 +53,8 @@ module AdjustableSchema
 							.uniq
 				end
 
-				def relationships **options
-					if (direction, scope = Config.find_direction **options) # filter by direction & related objects
+				def relationships(...)
+					if (direction, scope = Config.find_direction(...)) # filter by direction & related objects
 						relationships_to(direction)
 								.send Config.shortcuts[direction], scope
 					else # all in both directions

@@ -1,4 +1,10 @@
-require "test_helper"
+# frozen_string_literal: true
+
+# Enhanced table view for expressions
+#
+# rubocop:disable Layout/SpaceAroundMethodCallOperator
+
+require 'test_helper'
 require 'minitest/autorun'
 
 module AdjustableSchema

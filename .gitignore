@@ -11,3 +11,5 @@
 /coverage/
 
 /Gemfile.lock
+
+.rubocop-*

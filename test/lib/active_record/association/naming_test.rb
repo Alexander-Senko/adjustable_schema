@@ -1,4 +1,6 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 require 'minitest/autorun'
 
 require 'adjustable_schema/active_record/association'

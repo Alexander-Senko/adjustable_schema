@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 module AdjustableSchema
 	module ActiveRecord
 		module Association::Scopes
-			module Recursive
+			module Recursive # :nodoc:
+				# rubocop:disable Layout
+
 				def recursive
 					with_recursive(recursive_table.name => [ recursion_base, recursive_step ])
 							.unscope(:select, :joins, :where)

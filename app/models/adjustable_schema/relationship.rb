@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdjustableSchema
 	# = Relationships
 	#
@@ -31,7 +33,7 @@ module AdjustableSchema
 			includes :role
 		end
 
-		Config.shortcuts.each &-> ((association, method)) do
+		Config.shortcuts.each &-> ((association, method)) do # rubocop:disable Style
 			scope method, -> object {
 				case object
 				when ::ActiveRecord::Base, nil
@@ -52,8 +54,7 @@ module AdjustableSchema
 
 			scope "#{method}_abstract", -> object = nil {
 				if object
-					send(__method__).
-							send method, object
+					send(__method__).send method, object
 				else
 					where "#{association}_id" => nil
 				end
@@ -91,15 +92,15 @@ module AdjustableSchema
 			def [] **scopes
 				scopes
 						.map do
-							self
+							self # rubocop:disable Style
 									.send(Config.shortcuts[:source], _1)
 									.send(Config.shortcuts[:target], _2)
 						end
 						.reduce &:or
 			end
 
-			def seed! *models, roles: [], **_models
-				return seed!({ **Hash[*models], **_models }, roles:) if _models.any? # support keyword arguments syntax
+			def seed! *models, roles: [], **mapping # rubocop:disable Metrics
+				return seed!({ **Hash[*models], **mapping }, roles:) if mapping.any? # support keyword arguments syntax
 
 				case models
 				in [

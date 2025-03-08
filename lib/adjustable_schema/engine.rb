@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'organizer'
 
 module AdjustableSchema
-	class Engine < ::Rails::Engine
+	class Engine < ::Rails::Engine # :nodoc:
 		isolate_namespace AdjustableSchema
 
 		config.names = {

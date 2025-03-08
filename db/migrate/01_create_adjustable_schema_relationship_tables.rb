@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAdjustableSchemaRelationshipTables < ActiveRecord::Migration[7.1]
 	def change
 		# Use Active Record's configured type for primary and foreign keys
