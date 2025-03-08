@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - '*.md'
+      - '*.txt'
+
+  push:
+    branches: [ main ]
+    tags-ignore:
+      - '*'
+    paths:
+      - lib/**
+      - app/**
+      - config/**
+      - test/**
+      - Gemfile*
+      - '*.gemspec'
+      - .github/workflows/ci.yml
+
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }}
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby:
+          - 3.4
+        rails:
+          - 8.0
+        include:
+          - { ruby: head, rails: head }
+
+    env:
+      RAILS_VERSION: "${{ matrix.rails }}"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version:  ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Set up DB
+        run: rake app:db:prepare
+        env:
+          RAILS_ENV: test
+
+      - uses: paambaati/codeclimate-action@v9
+        env:
+          CC_TEST_REPORTER_ID: e03ff47a923589b12eca1982eb2e6785c7b36a8fd3df63f6363016fc13a52a4c
+        with:
+          coverageCommand: bundle exec rails test
+        continue-on-error: ${{ matrix.allow-fail || false }}
+        id: test
+
+      - name: Lint code for consistent style
+        run:  bin/rubocop -f github
+        if:   ${{ matrix.ruby == 'head' && matrix.rails == 'head' }}
+
+      - name: >-
+          Test ${{ steps.test.outcome }}
+        run: |
+          ruby -v
+          bin/rails -v
