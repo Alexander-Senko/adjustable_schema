@@ -1,5 +1,9 @@
 module AdjustableSchema
 	class Relationship
+		# = Relationship roles
+		#
+		# `AdjustableSchema::Relationship::Role` serves to distinguish
+		# between several associations of the same pair of models.
 		class Role < ApplicationRecord
 			include Organizer::Identifiable.by :name, symbolized: true
 

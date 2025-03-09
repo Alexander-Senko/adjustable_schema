@@ -1,4 +1,27 @@
 module AdjustableSchema
+	# = Relationships
+	#
+	# `Relationship` is a core class of Adjustable Schema representing both
+	# associations of model classes and connections of individual records.
+	#
+	# No constraints are supported yet, so only many-to-many associations
+	# are available for now.
+	#
+	# == Model associations
+	#
+	# To represent an association, a `Relationship` record should have both
+	# `source_type` and `target_type` columns set, with both ID columns set
+	# to `NULL`.
+	#
+	# == Record relationships
+	#
+	# To connect individual records, both `source` and `target` polymorphic
+	# associations shoud be set.
+	#
+	# == Roles
+	#
+	# Many associations with different semantics between the same models
+	# can be set using roles (see `Relationship::Role`).
 	class Relationship < ApplicationRecord
 		belongs_to :source, polymorphic: true, optional: true
 		belongs_to :target, polymorphic: true, optional: true
