@@ -6,9 +6,7 @@ module AdjustableSchema
 			def define
 				super
 
-				# HACK: using `try` to overcome a Rails bug
-				# (see https://github.com/rails/rails/issues/40109)
-				has_many roleless_name, -> { try :roleless }, **options if
+				has_many roleless_name, -> { roleless }, **options if
 						child?
 			end
 

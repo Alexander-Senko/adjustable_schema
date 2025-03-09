@@ -1,35 +1,30 @@
 module AdjustableSchema
 	module ActiveRecord
 		module Association::Scopes
-			concern :Recursive do
-				require_relative '../query_methods'
-
-				included do
-					::ActiveRecord::QueryMethods.prepend QueryMethods # HACK: to bring `with.recursive` in
-				end
-
+			module Recursive
 				def recursive
-					all._exec_scope do
-						all
-								.select(
-										select_values = self.select_values.presence || arel_table[Arel.star],
-										Arel.sql('1').as('distance'),
-								)
-								.with.recursive(recursive_table.name => unscoped
-										.select(
-												select_values,
-												(recursive_table[:distance] + 1).as('distance'),
-										)
-										.joins(inverse_association_name)
-										.arel
-										.join(recursive_table)
-												.on(recursive_table[primary_key].eq inverse_table[primary_key])
-								)
-								.unscope(:select, :joins, :where)
-								.from(recursive_table.alias table_name)
-								.distinct
-										.unscope(:order) # for SELECT DISTINCT, ORDER BY expressions must appear in select list
-					end
+					with_recursive(recursive_table.name => [
+							unscope(:order, :group, :having)
+									.select(
+											select_values = self.select_values.presence || arel_table[Arel.star],
+											Arel.sql('1').as('distance'),
+									),
+
+							unscoped
+									.select(
+											select_values,
+											(recursive_table[:distance] + 1).as('distance'),
+									)
+									.joins(inverse_association_name)
+									.joins(<<~SQL)
+										JOIN #{recursive_table.name}
+												ON #{recursive_table.name}.#{primary_key} = #{inverse_table.name}.#{primary_key}
+									SQL
+					])
+							.unscope(:select, :joins, :where)
+							.from(recursive_table.alias table_name)
+							.distinct
+									.unscope(:order) # for SELECT DISTINCT, ORDER BY expressions must appear in select list
 				end
 
 				private
