@@ -1,5 +1,9 @@
 ## [0.9.0] — UNRELEASED
 
+### Changed
+
+- Protected `AdjustableSchema::Relationship::Role` from being deleted when used.
+
 
 ## [0.8.0] — 2024-11-08
 

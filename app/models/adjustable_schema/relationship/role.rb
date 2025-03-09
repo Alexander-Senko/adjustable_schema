@@ -3,7 +3,8 @@ module AdjustableSchema
 		class Role < ApplicationRecord
 			include Organizer::Identifiable.by :name, symbolized: true
 
-			has_many :relationships
+			has_many :relationships,
+					dependent: :restrict_with_exception
 
 			validates :name, presence: true, uniqueness: true
 
