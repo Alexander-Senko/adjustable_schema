@@ -66,16 +66,10 @@ module AdjustableSchema
 					.reduce &:merge
 		}
 
-		scope :general, -> {
-			where target: nil
-		}
-
-		scope :applied, -> {
-			where.not(
-					source: nil,
-					target: nil,
-			)
-		}
+		scope :general,  -> { where     target: nil }
+		scope :sourced,  -> { where.not source: nil }
+		scope :targeted, -> { where.not target: nil }
+		scope :applied,  -> { sourced.targeted }
 
 		scope :named, -> *names {
 			case names

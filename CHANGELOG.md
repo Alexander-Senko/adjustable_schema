@@ -5,6 +5,14 @@
 - Requires Rails 8 and Ruby 3.4+.
 - Protected `AdjustableSchema::Relationship::Role` from being deleted when used.
 
+### Added
+
+- `Relationship#sourced` and `Relationship#targeted` scopes to filter relationships by presence of _source_ and _target_ records respectively.
+
+### Fixed
+
+- `Relationship#applied` scope used to return relationships with at least one record attached, instead of ones with both records present.
+
 
 ## [0.8.0] — 2024-11-08
 
