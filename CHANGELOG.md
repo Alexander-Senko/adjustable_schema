@@ -1,8 +1,8 @@
-## [0.10.0] — UNRELEASED
+## [0.10.0] — 2025-04-23
 
 ### Changed
 
-- No more polymorphic STI associations tricks.
+- No more polymorphic STI associations tricks (see 0dd30220 for details).
 
 ### Added
 
