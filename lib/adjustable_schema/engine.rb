@@ -20,5 +20,9 @@ module AdjustableSchema
 						},
 				},
 		}
+
+		config.actor_model_names = %w[
+				User
+		]
 	end
 end

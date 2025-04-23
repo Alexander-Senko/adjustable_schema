@@ -56,7 +56,7 @@ book.editor_people
 
 #### Special cases
 
-##### "Actor-like" models
+##### “Actor-like” models
 
 In case you have set up relationships with `User` model you'll get a slightly different naming:
 
@@ -72,6 +72,15 @@ book.editors
 
 The list of models to be handled this way can be set with `actor_model_names` configuration parameter.
 It includes `User` by default.
+
+``` ruby
+AdjustableSchema::Engine.configure do
+  config.actor_model_names << 'Person'
+end
+```
+
+> [!CAUTION]
+> Names are passed instead of model classes not to mess the loading up.
 
 ##### Self-referencing models
 

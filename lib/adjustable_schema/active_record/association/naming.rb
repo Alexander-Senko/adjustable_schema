@@ -37,10 +37,20 @@ module AdjustableSchema
 					end
 				end
 
+				module Actors # :nodoc:
+					include Memery
+
+					memoize def name_with_role = {
+							source: role.name,
+							target: "#{role.name.passivize}_#{target_name}",
+					}[direction]
+				end
+
 				def initialize(...)
 					super
 
 					extend Recursive if recursive?
+					extend Actors    if target.actor?
 				end
 
 				memoize def name name = object_name

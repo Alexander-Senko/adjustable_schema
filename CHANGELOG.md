@@ -4,6 +4,10 @@
 
 - No more polymorphic STI associations tricks.
 
+### Added
+
+- Special naming rules for “actor-like” models.
+
 
 ## [0.9.0] — 2025-03-10
 

@@ -37,6 +37,18 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 					_(target_association.name).must_equal :dummy_roled_model1s
 				end
 			end
+
+			describe 'when target acts as an actor' do
+				let(:target) { User }
+
+				it 'names sources' do
+					_(source_association.name).must_equal :dummy_roles
+				end
+
+				it 'names targets' do
+					_(target_association.name).must_equal :dummy_roled_users
+				end
+			end
 		end
 
 		describe 'without a role' do
@@ -61,6 +73,18 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 					_(target_association.name).must_equal :to_selves
 				end
 			end
+
+			describe 'when target acts as an actor' do
+				let(:target) { User }
+
+				it 'names sources' do
+					_(source_association.name).must_equal :users
+				end
+
+				it 'names targets' do
+					_(target_association.name).must_equal :users
+				end
+			end
 		end
 	end
 
@@ -83,6 +107,18 @@ describe AdjustableSchema::ActiveRecord::Association::Naming do
 
 				it 'names targets' do
 					_(target_association.relationships_name).must_equal :dummy_roled_model1_relationships
+				end
+			end
+
+			describe 'when target acts as an actor' do
+				let(:target) { User }
+
+				it 'names sources' do
+					_(source_association.relationships_name).must_equal :dummy_role_relationships
+				end
+
+				it 'names targets' do
+					_(target_association.relationships_name).must_equal :dummy_roled_user_relationships
 				end
 			end
 		end

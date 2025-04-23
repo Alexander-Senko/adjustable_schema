@@ -66,6 +66,11 @@ module AdjustableSchema
 			module_function method
 		end
 
+		memoize def actor_models
+			Engine.config.actor_model_names
+					.filter_map &:safe_constantize
+		end
+
 		def association_names = Engine.config.names[:associations]
 
 		def normalize **options

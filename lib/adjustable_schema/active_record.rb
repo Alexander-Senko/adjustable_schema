@@ -7,6 +7,7 @@ module AdjustableSchema
 		ActiveSupport.on_load :active_record do
 			include Associations
 			include Relationships
+			include Actors
 		end
 	end
 end

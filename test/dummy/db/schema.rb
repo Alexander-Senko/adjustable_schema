@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_24_105254) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_23_093008) do
   create_table "adjustable_schema_relationship_roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -38,6 +38,11 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_24_105254) do
   end
 
   create_table "model2s", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
