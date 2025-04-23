@@ -22,6 +22,8 @@ module AdjustableSchema
 							.merge Relationship.named *roles
 				end
 			end
+
+			def roleless_name = name target_name
 		end
 	end
 end

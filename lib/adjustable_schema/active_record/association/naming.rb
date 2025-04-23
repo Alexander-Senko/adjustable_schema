@@ -87,8 +87,6 @@ module AdjustableSchema
 
 				def name_without_role = target_name
 
-				def roleless_name = name(target_name)
-
 				def name_for_any (name = object_name) = :"#{name}ful"
 				def name_for_none(name = object_name) = :"#{name}less"
 			end
