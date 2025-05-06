@@ -7,6 +7,7 @@
 ### Added
 
 - `referencing`/`referenced_by` scopes to filter by related records.
+- `#referencing!`/`#referenced_by!` setters to add related records.
 
 
 ## [0.10.0] — 2025-04-23

@@ -42,6 +42,12 @@ module AdjustableSchema
 					end
 				end
 
+				def define_reference_setter direction, name
+					define_method "#{name}!" do |records, **options|
+						reference! direction => records, **options
+					end
+				end
+
 				def define_recursive_method association_name, method
 					define_method method do
 						send(association_name)
@@ -60,6 +66,9 @@ module AdjustableSchema
 								it
 										.reject { respond_to? _2 }
 										.each   { define_reference_scope _1, _2 }
+								it
+										.reject { method_defined? "#{_2}!" }
+										.each   { define_reference_setter _1, _2 }
 							end
 
 					Config.association_directions.recursive
@@ -97,6 +106,21 @@ module AdjustableSchema
 				end
 
 				private
+
+				def reference! source: self, target: self, role: nil
+					role &&= Relationship::Role[role]
+
+					[ source, target ]
+							.map { Array it }
+							.reduce(&:product)
+							.each do |source, target|
+								Relationship.create! source:, target:, role:
+							rescue ::ActiveRecord::RecordNotUnique
+								# That’s OK, it’s already there
+							end
+
+					self # for chainability
+				end
 
 				def relationships_to direction
 					try "#{direction}_relationships" or

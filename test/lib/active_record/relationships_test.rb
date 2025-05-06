@@ -185,6 +185,14 @@ module AdjustableSchema
 		end
 
 		describe '#related?' do
+			before do
+				source.related
+						.without(source, target, target_r1)
+						.each &:destroy!
+				source.relationships(source:)
+						.each &:destroy!
+			end
+
 			it 'checks if there are any related records' do
 				_(source.related?)
 						.must_equal true
@@ -224,6 +232,68 @@ module AdjustableSchema
 							.must_be_kind_of ::ActiveRecord::Relation
 					_(subject.sole.target)
 							.must_equal target_r1
+				end
+			end
+		end
+
+		describe 'setters' do
+			let(:record) { association.klass.create! }
+
+			describe '#referencing!' do
+				subject { source.referencing! record }
+
+				let(:association) { source.model2s }
+
+				it 'links the record' do
+					subject
+
+					_(association.reload)
+							.must_include record
+				end
+
+				it 'doesn’t update the association' do
+					association.load
+
+					subject
+
+					_(association)
+							.wont_include record
+				end
+
+				it 'ignores duplicates' do
+					2.times { subject }
+
+					_(association.reload & [ record ])
+							.must_be :one?
+				end
+			end
+
+			describe '#referenced_by!' do
+				subject { target.referenced_by! record }
+
+				let(:association) { target.model1s }
+
+				it 'links the record' do
+					subject
+
+					_(association.reload)
+							.must_include record
+				end
+
+				it 'doesn’t update the association' do
+					association.load
+
+					subject
+
+					_(association)
+							.wont_include record
+				end
+
+				it 'ignores duplicates' do
+					2.times { subject }
+
+					_(association.reload & [ record ])
+							.must_be :one?
 				end
 			end
 		end
