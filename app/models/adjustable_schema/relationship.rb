@@ -38,9 +38,9 @@ module AdjustableSchema
 				case object
 				when ::ActiveRecord::Base, nil
 					where association => object
-				when Class
-					where "#{association}_type" => object.ancestors
-							.grep(..object.base_class)
+				when ...::ActiveRecord::Base
+					where "#{association}_type" => object.descendants
+							.including(object)
 							.map(&:name)
 				when ::ActiveRecord::Relation
 					send(method, object.klass)

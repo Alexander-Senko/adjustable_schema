@@ -2,6 +2,7 @@
 
 ### Changed
 
+- `Relationship.to`/`.of` handle STI classes precisely instead of falling back to a base class.
 - Customized inspections for `Relationship`.
 
 ### Added
