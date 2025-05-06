@@ -5,6 +5,8 @@ require 'memery'
 module AdjustableSchema
 	module ActiveRecord # :nodoc:
 		concern :Relationships do
+			ANY = Object.new
+
 			class_methods do
 				include Memery
 
@@ -18,7 +20,29 @@ module AdjustableSchema
 
 				private
 
-				def define_recursive_methods association_name, method
+				def define_reference_scope direction, name
+					scope name, -> records, role: ANY do
+						joins(relationships = :"#{direction}_relationships")
+								.distinct
+								.where(
+										relationships => { id: Relationship
+												.send(Config.shortcuts[direction], records) # [to|of]: records
+												.then do
+													case role
+													when ANY
+														it
+													when nil
+														it.nameless
+													else
+														it.named *role
+													end
+												end,
+										},
+								)
+					end
+				end
+
+				def define_recursive_method association_name, method
 					define_method method do
 						send(association_name)
 								.recursive
@@ -30,10 +54,18 @@ module AdjustableSchema
 				included do
 					scope :roleless, -> { merge Relationship.nameless }
 
+					Config.association_directions.references
+							.select { reflect_on_association "#{_1}_relationships" }
+							.tap do
+								it
+										.reject { respond_to? _2 }
+										.each   { define_reference_scope _1, _2 }
+							end
+
 					Config.association_directions.recursive
 							.select { reflect_on_association _1 }
 							.reject { method_defined? _2 }
-							.each   { define_recursive_methods _1, _2 }
+							.each   { define_recursive_method _1, _2 }
 				end
 
 				def related?(...)

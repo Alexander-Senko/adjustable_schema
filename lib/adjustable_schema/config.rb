@@ -21,7 +21,8 @@ module AdjustableSchema
 				end
 			end
 
-			def self = config :self
+			def self       = config :self
+			def references = config :reference
 
 			def recursive
 				config.values.to_h do

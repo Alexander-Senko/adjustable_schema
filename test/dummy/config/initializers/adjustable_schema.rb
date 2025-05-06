@@ -1,4 +1,4 @@
-AdjustableSchema::Engine.config.names[:associations] = {
+AdjustableSchema::Engine.config.names[:associations].deep_merge!(
 		source: {
 				shortcut:  'f',
 				self:      'from_self',
@@ -9,4 +9,4 @@ AdjustableSchema::Engine.config.names[:associations] = {
 				self:      'to_self',
 				recursive: 'to_recursive',
 		},
-}
+)

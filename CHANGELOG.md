@@ -4,6 +4,10 @@
 
 - Customized inspections for `Relationship`.
 
+### Added
+
+- `referencing`/`referenced_by` scopes to filter by related records.
+
 
 ## [0.10.0] — 2025-04-23
 

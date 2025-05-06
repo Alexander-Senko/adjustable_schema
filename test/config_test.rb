@@ -54,6 +54,15 @@ describe AdjustableSchema::Config do
 			end
 		end
 
+		describe '.references' do
+			it 'returns names' do
+				_(subject.references).must_equal(
+						source: :referenced_by,
+						target: :referencing,
+				)
+			end
+		end
+
 		describe '.recursive' do
 			it 'returns names' do
 				_(subject.recursive).must_equal(

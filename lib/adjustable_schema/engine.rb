@@ -11,11 +11,13 @@ module AdjustableSchema
 						source: {
 								shortcut:  :of,
 								self:      :child,
+								reference: :referenced_by,
 								recursive: :descendants,
 						},
 						target: {
 								shortcut:  :to,
 								self:      :parent,
+								reference: :referencing,
 								recursive: :ancestors,
 						},
 				},

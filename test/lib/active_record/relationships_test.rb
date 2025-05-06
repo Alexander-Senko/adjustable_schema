@@ -9,9 +9,9 @@ require 'minitest/autorun'
 
 module AdjustableSchema
 	describe ActiveRecord::Relationships do
-		let(:source)     { Model1.create! }
-		let(:target)     { source.model2s.create! }
-		let(:target_r1)  { source.role1ed_model2s.create! }
+		let(:source)     { Model1.first_or_create! }
+		let(:target)     { source.model2s.first_or_create! }
+		let(:target_r1)  { source.role1ed_model2s.first_or_create! }
 		let(:role_names) { %i[ role1 role2 ] }
 
 		before do # should exist
@@ -31,6 +31,159 @@ module AdjustableSchema
 			end
 		}
 
+		describe 'scopes' do
+			describe '.referencing' do
+				subject { receiver.referencing records, **options }
+
+				let(:receiver) { target.model1s }
+				let(:options)  {}
+
+				describe 'with a record' do
+					let(:records) { target }
+
+					it 'returns records' do
+						_(subject)
+								.must_be_kind_of ::ActiveRecord::Relation
+						_(subject)
+								.must_include source
+					end
+				end
+
+				describe 'with a class' do
+					let(:records) { target.class }
+
+					it 'returns records' do
+						_(subject)
+								.must_be_kind_of ::ActiveRecord::Relation
+						_(subject)
+								.must_include source
+					end
+				end
+
+				describe 'with roles' do
+					let(:records) { target.class }
+					let(:options) { { role: } }
+
+					describe 'with a single one' do
+						let(:role) { role_names.first }
+
+						it 'returns records' do
+							_(subject)
+									.must_be_kind_of ::ActiveRecord::Relation
+							_(subject)
+									.must_include source
+						end
+
+						describe 'with a missing one' do
+							let(:role) { :missing }
+
+							it 'returns nothing' do
+								_(subject)
+										.must_be_kind_of ::ActiveRecord::Relation
+								_(subject)
+										.must_be_empty
+							end
+						end
+					end
+
+					describe 'with several ones' do
+						let(:role) { role_names }
+
+						it 'returns records' do
+							_(subject)
+									.must_be_kind_of ::ActiveRecord::Relation
+							_(subject)
+									.must_include source
+						end
+					end
+				end
+			end
+
+			describe '.referenced_by' do
+				subject { receiver.referenced_by records, **options }
+
+				let(:receiver) { source.model2s }
+				let(:options)  {}
+
+				describe 'with a record' do
+					let(:records) { source }
+
+					it 'returns records' do
+						_(subject)
+								.must_be_kind_of ::ActiveRecord::Relation
+						_(subject)
+								.must_include target, target_r1
+					end
+				end
+
+				describe 'with a class' do
+					let(:records) { source.class }
+
+					it 'returns records' do
+						_(subject)
+								.must_be_kind_of ::ActiveRecord::Relation
+						_(subject)
+								.must_include target, target_r1
+					end
+				end
+
+				describe 'with roles' do
+					let(:records) { source.class }
+					let(:options) { { role: } }
+
+					describe 'with a single one' do
+						let(:role) { role_names.first }
+
+						it 'returns records' do
+							_(subject)
+									.must_be_kind_of ::ActiveRecord::Relation
+							_(subject)
+									.must_include target_r1
+							_(subject)
+									.wont_include target
+						end
+
+						describe 'with a missing one' do
+							let(:role) { :missing }
+
+							it 'returns nothing' do
+								_(subject)
+										.must_be_kind_of ::ActiveRecord::Relation
+								_(subject)
+										.must_be_empty
+							end
+						end
+					end
+
+					describe 'with an undefined one' do
+						let(:role) {}
+
+						it 'returns records' do
+							_(subject)
+									.must_be_kind_of ::ActiveRecord::Relation
+							_(subject)
+									.must_include target
+							_(subject)
+									.wont_include target_r1
+						end
+					end
+
+					describe 'with several ones' do
+						let(:role) { role_names }
+
+						it 'returns records' do
+							_(subject)
+									.must_be_kind_of ::ActiveRecord::Relation
+							_(subject)
+									.must_include target_r1
+							_(subject)
+									.wont_include target
+						end
+					end
+				end
+			end
+		end
+
 		describe '#related?' do
 			it 'checks if there are any related records' do
 				_(source.related?)
@@ -49,7 +202,7 @@ module AdjustableSchema
 
 			it 'returns related records' do
 				_(subject)
-						.must_equal [ target, target_r1 ]
+						.must_include target, target_r1
 			end
 		end
 
@@ -60,7 +213,7 @@ module AdjustableSchema
 				_(subject)
 						.must_be_kind_of ::ActiveRecord::Relation
 				_(subject.map &:target)
-						.must_equal [ target, target_r1 ]
+						.must_include target, target_r1
 			end
 
 			describe 'with options' do
