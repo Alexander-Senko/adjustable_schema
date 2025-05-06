@@ -68,6 +68,28 @@ module AdjustableSchema
 						.wont_respond_to :recursive
 			end
 
+			describe 'with an actor-like model' do
+				let(:direction) { :source }
+				let(:target)    { User }
+				let(:role_name) { :author }
+
+				let(:association_name) { 'authors' }
+				let(:name_for_any)     { 'authored' }
+
+				defines_scopes
+				defines_methods
+
+				describe 'without a role' do
+					let(:role) {}
+
+					let(:association_name) { 'users' }
+					let(:name_for_any)     { 'used' }
+
+					defines_scopes
+					defines_methods
+				end
+			end
+
 			describe 'when recursive' do
 				let(:target) { owner }
 

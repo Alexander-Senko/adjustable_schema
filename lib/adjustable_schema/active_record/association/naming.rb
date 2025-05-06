@@ -44,6 +44,10 @@ module AdjustableSchema
 							source: role.name,
 							target: "#{role.name.passivize}_#{target_name}",
 					}[direction]
+
+					def name_for_any(name = object_name) = name
+							.passivize
+							.to_sym
 				end
 
 				def initialize(...)

@@ -2,6 +2,9 @@
 
 ### Changed
 
+- Special naming rules for “actor-like” models:
+	switched from `<associat>ful` form to check for related records’ presence back to a passive one (`<associat>ed`).
+	Thus, it’s `authored` and `edited` now instead of `authorful` and `editful`.
 - `Relationship.to`/`.of` handle STI classes precisely instead of falling back to a base class.
 - Customized inspections for `Relationship`.
 
