@@ -19,6 +19,18 @@ module AdjustableSchema
 			target_r1
 		end
 
+		# HACK: looks like a bug in Rails
+		ActiveRecord::Relationships::InstanceMethods.prepend Module.new {
+			def relationships(...)
+				warn <<~TEXT
+					Reloading relationships to work around a possible bug in Rails.
+					Remove this hack from #{__FILE__}:#{__LINE__} when the bug is fixed.
+				TEXT
+
+				super.tap { it.each &:reload }
+			end
+		}
+
 		describe '#related?' do
 			it 'checks if there are any related records' do
 				_(source.related?)

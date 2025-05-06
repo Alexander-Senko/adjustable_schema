@@ -43,7 +43,6 @@ module AdjustableSchema
 
 				def related(...)
 					relationships(...)
-							.preload(Config.association_directions)
 							.map do |relationship|
 								Config.association_directions
 										.map { relationship.send it } # both objects
@@ -62,6 +61,7 @@ module AdjustableSchema
 								.map { relationships_to it }
 								.reduce(&:or)
 					end
+							.preload(Config.association_directions)
 				end
 
 				private
