@@ -12,6 +12,11 @@
 
 - `referencing`/`referenced_by` scopes to filter by related records.
 - `#referencing!`/`#referenced_by!` setters to add related records.
+- Short-cut methods for related records.
+	For example, `authors` association provides the following extras:
+	- `.authored_by` scope to filter records by authors,
+	- `#authored_by?` — to check if the record is authored by provided ones,
+	- `#authored_by!` — to add an author.
 
 
 ## [0.10.0] — 2025-04-23

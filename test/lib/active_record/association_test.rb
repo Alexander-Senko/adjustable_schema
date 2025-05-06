@@ -76,8 +76,14 @@ module AdjustableSchema
 				let(:association_name) { 'authors' }
 				let(:name_for_any)     { 'authored' }
 
-				defines_scopes
-				defines_methods
+				defines_scopes do
+					_(owner).must_respond_to :authored_by
+				end
+
+				defines_methods do
+					_(record).must_respond_to :authored_by?
+					_(record).must_respond_to :authored_by!
+				end
 
 				describe 'without a role' do
 					let(:role) {}
@@ -85,8 +91,14 @@ module AdjustableSchema
 					let(:association_name) { 'users' }
 					let(:name_for_any)     { 'used' }
 
-					defines_scopes
-					defines_methods
+					defines_scopes do
+						_(owner).wont_respond_to :used_by
+					end
+
+					defines_methods do
+						_(record).wont_respond_to :used_by?
+						_(record).wont_respond_to :used_by!
+					end
 				end
 			end
 

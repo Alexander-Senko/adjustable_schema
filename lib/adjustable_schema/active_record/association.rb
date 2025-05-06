@@ -15,14 +15,16 @@ module AdjustableSchema
 			require_relative 'association/scopes'
 			require_relative 'association/roleless'
 			require_relative 'association/hierarchy'
+			require_relative 'association/referenced'
 
 			include Memery
 
 			def initialize(...)
 				super
 
-				extend Roleless  if roleless?
-				extend Hierarchy if hierarchy?
+				extend Roleless   if roleless?
+				extend Hierarchy  if hierarchy?
+				extend Referenced if source? and role and target.actor?
 			end
 
 			def define
@@ -58,13 +60,15 @@ module AdjustableSchema
 
 			def define_scopes
 				scopes
-						.reject { owner.singleton_class.method_defined? _1 }
+						.reject { owner.respond_to? _1 }
 						.each   { owner.scope _1, _2 }
 			end
 
 			def define_methods
-				flags
-						.transform_keys { :"#{it}?" }
+				{
+						**flag_methods,
+						**setter_methods,
+				}
 						.reject { owner.method_defined? _1 }
 						.each   { owner.define_method _1, &_2 }
 			end
@@ -92,6 +96,14 @@ module AdjustableSchema
 						name_for_none => -> { send(name).none? },
 				}
 			end
+
+			def flag_methods = flags
+					.transform_keys { :"#{it}?" }
+
+			def setters = {}
+
+			def setter_methods = setters
+					.transform_keys { :"#{it}!" }
 
 			memoize def options = {
 					through:     define_relationships,
