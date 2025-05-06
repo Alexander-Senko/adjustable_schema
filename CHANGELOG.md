@@ -1,5 +1,9 @@
 ## [0.11.0] — UNRELEASED
 
+### Changed
+
+- Customized inspections for `Relationship`.
+
 
 ## [0.10.0] — 2025-04-23
 

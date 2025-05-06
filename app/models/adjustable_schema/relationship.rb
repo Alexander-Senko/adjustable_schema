@@ -131,5 +131,19 @@ module AdjustableSchema
 		end
 
 		def abstract? = not (source or target)
+
+		def inspect
+			<<~TEXT.chomp.gsub(/-+/, '-')
+				#<#{self.class}##{id}: #{
+						source_type
+				}#{
+						source_id&.then { "##{it}" }
+				}>-#{name}->#{
+						target_type unless target_type == source_type and target_id
+				}#{
+						target_id&.then { "##{it}" }
+				}>
+			TEXT
+		end
 	end
 end
