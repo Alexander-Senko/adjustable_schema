@@ -98,15 +98,6 @@ module AdjustableSchema
 						end
 						.reduce &:or
 			end
-
-			def seed!(...)
-				AdjustableSchema.deprecator.warn <<~TEXT.squish
-					#{self}.#{__method__} is deprecated and will be removed in v0.12.
-					Please use AdjustableSchema.relationship! instead.
-				TEXT
-
-				AdjustableSchema.relationship!(...)
-			end
 		end
 
 		delegate :name, to: :role, allow_nil: true
