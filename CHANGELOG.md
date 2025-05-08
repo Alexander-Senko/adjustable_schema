@@ -1,3 +1,10 @@
+## [0.12.0] — UNRELEASED
+
+### Changed
+
+- Removed deprecated `Relationship.seed!`.
+
+
 ## [0.11.1] — 2025-05-19
 
 ### Fixed
