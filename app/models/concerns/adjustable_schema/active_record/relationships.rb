@@ -17,48 +17,13 @@ module AdjustableSchema
 				end
 
 				def roles(&) = Role.of self, &
-
-				private
-
-				def define_reference_scope direction, name
-					scope name, -> records, role: ANY do
-						joins(relationships = :"#{direction}_relationships")
-								.distinct
-								.where(
-										relationships => { id: Relationship
-												.send(Config.shortcuts[direction], records) # [to|of]: records
-												.then do
-													case role
-													when ANY
-														it
-													when nil
-														it.nameless
-													else
-														it.named *role
-													end
-												end,
-										},
-								)
-					end
-				end
-
-				def define_reference_setter direction, name
-					define_method "#{name}!" do |records, **options|
-						reference! direction => records, **options
-					end
-				end
-
-				def define_recursive_method association_name, method
-					define_method method do
-						send(association_name)
-								.recursive
-					end
-				end
 			end
 
 			concern :InstanceMethods do # to include when needed
 				included do
 					scope :roleless, -> { merge Relationship.nameless }
+
+					extend Relationships::Builder
 
 					Config.association_directions.references
 							.select { reflect_on_association "#{_1}_relationships" }
