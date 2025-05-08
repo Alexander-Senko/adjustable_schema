@@ -1,5 +1,15 @@
 # Adjustable Schema for Rails
 
+![GitHub Actions Workflow Status](
+https://img.shields.io/github/actions/workflow/status/Alexander-Senko/adjustable_schema/ci.yml
+)
+![Code Climate maintainability](
+https://img.shields.io/codeclimate/maintainability-percentage/Alexander-Senko/adjustable_schema
+)
+![Code Climate coverage](
+https://img.shields.io/codeclimate/coverage/Alexander-Senko/adjustable_schema
+)
+
 Define your model associations in the database without changing the schema or models.
 
 This Rails Engine was renamed and refactored from [Rails Dynamic Associations](https://github.com/Alexander-Senko/rails_dynamic_associations).
