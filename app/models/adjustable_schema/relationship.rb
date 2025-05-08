@@ -99,27 +99,13 @@ module AdjustableSchema
 						.reduce &:or
 			end
 
-			def seed! *models, roles: [], **mapping # rubocop:disable Metrics
-				return seed!({ **Hash[*models], **mapping }, roles:) if mapping.any? # support keyword arguments syntax
+			def seed!(...)
+				AdjustableSchema.deprecator.warn <<~TEXT.squish
+					#{self}.#{__method__} is deprecated and will be removed in v0.12.
+					Please use AdjustableSchema.relationship! instead.
+				TEXT
 
-				case models
-				in [
-						String | Symbol | Class => source_type,
-						String | Symbol | Class => target_type,
-				]
-					roles
-							.map { |name| Role.find_or_create_by! name: }
-							.then { it.presence or [ nil ] } # no roles => nameless relationship
-							.map { |role| create! source_type:, target_type:, role: }
-				in [ Hash => models ]
-					for sources, targets in models do
-						for source, target in Array(sources).product Array(targets) do
-							seed! source, target, roles:
-						end
-					end
-				in [ Class => source ]
-					seed! source, source, roles: # recursive
-				end
+				AdjustableSchema.relationship!(...)
 			end
 		end
 

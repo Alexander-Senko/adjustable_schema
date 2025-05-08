@@ -14,7 +14,7 @@ module AdjustableSchema
 		let(:direction) { :target }
 		let(:owner)     { Model1 }
 		let(:target)    { Model2 }
-		let(:role)      { Relationship::Role.find_or_create_by! name: role_name }
+		let(:role)      { AdjustableSchema.role! role_name }
 		let(:role_name) { :dummy_role }
 		let(:record)    { subject.owner.create! }
 

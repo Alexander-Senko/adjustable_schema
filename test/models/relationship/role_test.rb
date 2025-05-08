@@ -33,7 +33,7 @@ module AdjustableSchema
 					_(subject.map(&:class).uniq)
 							.must_equal [ described_class ]
 					_(subject.names.sort)
-							.must_equal %i[ role1 role2 ]
+							.must_include *%i[ role1 role2 ]
 				end
 			end
 

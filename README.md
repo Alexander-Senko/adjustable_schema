@@ -24,7 +24,7 @@ AdjustableSchema::Relationship.create! source_type: 'Person',
 Or use a helper method:
 
 ``` ruby
-AdjustableSchema::Relationship.seed! Person => Book
+AdjustableSchema.relationship! Person => Book
 ```
 
 Now you have:
@@ -39,7 +39,7 @@ book.people
 You can create multiple role-based associations between two models.
 
 ``` ruby
-AdjustableSchema::Relationship.seed! Person => Book, roles: %w[author editor]
+AdjustableSchema.relationship! Person => Book, roles: %w[author editor]
 ```
 
 You will get:
@@ -61,7 +61,7 @@ book.editor_people
 In case you have set up relationships with `User` model you'll get a slightly different naming:
 
 ``` ruby
-AdjustableSchema::Relationship.seed! User => Book, roles: %w[author editor]
+AdjustableSchema.relationship! User => Book, roles: %w[author editor]
 ```
 
 ``` ruby
@@ -87,7 +87,7 @@ end
 You may want to set up recursive relationships:
 
 ``` ruby
-AdjustableSchema::Relationship.seed! Person, roles: %w[friend]
+AdjustableSchema.relationship! Person, roles: %w[friend]
 ```
 
 In this case you'll get these associations:

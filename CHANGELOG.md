@@ -2,6 +2,7 @@
 
 ### Changed
 
+- Deprecated `Relationship.seed!` in favor of `AdjustableSchema.relationship!`.
 - Special naming rules for “actor-like” models:
 	switched from `<associat>ful` form to check for related records’ presence back to a passive one (`<associat>ed`).
 	Thus, it’s `authored` and `edited` now instead of `authorful` and `editful`.
