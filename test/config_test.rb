@@ -75,10 +75,20 @@ describe AdjustableSchema::Config do
 		describe '.opposite' do
 			it 'returns a name' do
 				_(subject.opposite to: :source).must_equal :target
+				_(subject.opposite to: :target).must_equal :source
 			end
 
 			it 'raises on invalid names' do
 				_ { subject.opposite to: :from }.must_raise Enumerable::SoleItemExpectedError
+			end
+		end
+
+		describe '.with_opposite' do
+			it 'returns a name mapping' do
+				_(subject.with_opposite).must_equal(
+						source: :target,
+						target: :source,
+				)
 			end
 		end
 	end

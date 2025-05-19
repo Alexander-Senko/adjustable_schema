@@ -34,6 +34,10 @@ module AdjustableSchema
 				grep_v(to).sole
 			end
 
+			def with_opposite
+				index_with { opposite to: it }
+			end
+
 			private
 
 			def config section = nil
