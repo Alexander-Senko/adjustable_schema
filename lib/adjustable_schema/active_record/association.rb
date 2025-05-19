@@ -19,6 +19,12 @@ module AdjustableSchema
 
 			include Memery
 
+			class << self
+				include Memery
+
+				memoize :new # unique
+			end
+
 			def initialize(...)
 				super
 

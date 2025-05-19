@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
+require 'memery'
+
 module AdjustableSchema
 	module ActiveRecord # :nodoc:
 		concern :Associations do
 			class_methods do
+				include Memery
+
 				protected
 
-				def adjust_associations
+				memoize def adjust_associations
 					adjust_parent_associations
 
 					relationships
@@ -21,6 +25,7 @@ module AdjustableSchema
 							&.tap do # finally, if any relationships have been set up
 								include Relationships::InstanceMethods
 							end
+							&.size # optimization
 				end
 
 				private
