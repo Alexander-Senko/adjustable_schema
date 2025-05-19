@@ -11,9 +11,12 @@ module AdjustableSchema
 				include Memery
 
 				memoize def relationships
-					Config.association_directions.index_with do
-						Relationship.abstract.send Config.shortcuts.opposite[it], self
-					end
+					Config.association_directions
+							.with_opposite
+							.transform_values do
+								Relationship.abstract
+										.where "#{it}_type": name
+							end
 				end
 
 				def roles(&) = Role.of self, &

@@ -4,9 +4,11 @@ module AdjustableSchema
 	module ActiveRecord # :nodoc:
 		concern :Associations do
 			class_methods do
-				private
+				protected
 
 				def adjust_associations
+					adjust_parent_associations
+
 					relationships
 							.flat_map do |direction, relationships|
 								relationships
@@ -19,6 +21,16 @@ module AdjustableSchema
 							&.tap do # finally, if any relationships have been set up
 								include Relationships::InstanceMethods
 							end
+				end
+
+				private
+
+				def adjust_parent_associations
+					return unless superclass < Associations
+
+					superclass.adjust_associations
+
+					_reflections.reverse_merge! superclass._reflections # update
 				end
 
 				def setup_association direction, target = self, role = nil

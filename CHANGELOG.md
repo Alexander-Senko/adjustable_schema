@@ -1,5 +1,9 @@
 ## [0.11.1] — UNRELEASED
 
+### Fixed
+
+- Associations setup for inherited models got broken in v0.11.0.
+
 
 ## [0.11.0] — 2025-05-09
 
