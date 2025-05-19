@@ -33,7 +33,7 @@ module AdjustableSchema
 				has_many name, **options do
 					include Scopes
 					include Scopes::Recursive if association.recursive?
-				end
+				end or return
 
 				define_scopes
 				define_methods
