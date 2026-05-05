@@ -3,11 +3,15 @@
 ![GitHub Actions Workflow Status](
 https://img.shields.io/github/actions/workflow/status/Alexander-Senko/adjustable_schema/ci.yml
 )
-![Code Climate maintainability](
-https://img.shields.io/codeclimate/maintainability-percentage/Alexander-Senko/adjustable_schema
+[![Maintainability](
+	https://qlty.sh/gh/Alexander-Senko/projects/adjustable_schema/maintainability.svg
+)](
+	https://qlty.sh/gh/Alexander-Senko/projects/adjustable_schema
 )
-![Code Climate coverage](
-https://img.shields.io/codeclimate/coverage/Alexander-Senko/adjustable_schema
+[![Code Coverage](
+	https://qlty.sh/gh/Alexander-Senko/projects/adjustable_schema/coverage.svg
+)](
+	https://qlty.sh/gh/Alexander-Senko/projects/adjustable_schema
 )
 
 Define your model associations in the database without changing the schema or models.

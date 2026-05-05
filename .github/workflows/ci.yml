@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -43,6 +43,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }}
+    permissions:
+      id-token: write
     strategy:
       matrix:
         ruby:
@@ -59,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -73,13 +75,17 @@ jobs:
           RAILS_ENV: test
 
       - name: Run specs with code coverage
-        uses: paambaati/codeclimate-action@v9
-        env:
-          CC_TEST_REPORTER_ID: e03ff47a923589b12eca1982eb2e6785c7b36a8fd3df63f6363016fc13a52a4c
-        with:
-          coverageCommand: bundle exec rails test
+        run: bundle exec rake
         continue-on-error: ${{ matrix.allow-fail || false }}
         id: test
+
+      - name: Upload coverage to Qlty Cloud
+        if:   ${{ matrix.ruby == 'head' && steps.test.outcome == 'success' }}
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          oidc:   true
+          files:  coverage/.resultset.json
+          format: simplecov
 
       - name: Test ${{ steps.test.outcome }}
         run: |
