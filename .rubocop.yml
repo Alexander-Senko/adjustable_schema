@@ -10,3 +10,14 @@ AllCops:
 Metrics/BlockLength:
   AllowedMethods:
     - describe
+
+# HACK: shared configuration gets ignored for some reason
+Metrics/ModuleLength:
+  Exclude:
+    - test/**/*_test.rb
+Lint/EmptyBlock:
+  Exclude:
+    - test/**/*_test.rb
+Style/Documentation:
+  Exclude:
+    - '{db,test}/**/*.rb'
