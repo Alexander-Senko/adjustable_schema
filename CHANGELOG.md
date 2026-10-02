@@ -4,6 +4,10 @@
 
 - Removed deprecated `Relationship.seed!`.
 
+### Added
+
+- Rails 8.2 support.
+
 
 ## [0.11.1] — 2025-05-19
 

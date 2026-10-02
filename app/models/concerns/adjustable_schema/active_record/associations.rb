@@ -35,7 +35,9 @@ module AdjustableSchema
 
 					superclass.adjust_associations
 
-					_reflections.reverse_merge! superclass._reflections # update
+					superclass._reflections
+							.except(*_reflections.keys)
+							.each { |name, reflection| add_reflections self, name, reflection }
 				end
 
 				def setup_association direction, target = self, role = nil
