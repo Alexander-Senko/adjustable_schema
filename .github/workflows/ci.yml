@@ -74,7 +74,7 @@ jobs:
           bundler-cache: true
 
       - name: Set up DB
-        run: rake app:db:prepare
+        run: bundle exec rake app:db:prepare
         env:
           RAILS_ENV: test
 
