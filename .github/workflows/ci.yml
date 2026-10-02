@@ -79,7 +79,7 @@ jobs:
           RAILS_ENV: test
 
       - name: Run specs with code coverage
-        run: bundle exec rake
+        run: bin/rails test
         continue-on-error: ${{ matrix.allow-fail || false }}
         id: test
 
