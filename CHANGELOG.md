@@ -6,6 +6,12 @@
 
 ### Added
 
+- Checks for related records’ presence on roleless recursive associations:
+	- `.intermediate` —
+		records having only one record associated;
+	- `.branching` —
+		records having several child records associated;
+	- `.with_next_level` helper scope.
 - Rails 8.2 support.
 
 
