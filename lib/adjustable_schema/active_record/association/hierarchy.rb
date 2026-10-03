@@ -13,6 +13,10 @@ module AdjustableSchema
 
 						name_for_any( target_name) => -> { where.associated name },
 						name_for_none(target_name) => -> { where.missing    name },
+						intermediate:                 -> { with_next_level.having('COUNT(*) = 1') },
+						branching:                    -> { with_next_level.having('COUNT(*) > 1') },
+
+						with_next_level:              -> { joins(name).group arel_table[primary_key] },
 				}
 			end
 

@@ -146,10 +146,9 @@ module AdjustableSchema
 						defines_association
 
 						defines_scopes do
-							skip 'not yet implemented'
-
 							_(owner).must_respond_to :intermediate
 							_(owner).must_respond_to :branching
+							_(owner).must_respond_to :with_next_level
 						end
 
 						defines_methods do
